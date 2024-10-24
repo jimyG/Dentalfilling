@@ -3,7 +3,9 @@
 @section('content')
 <div class="container mt-5">
 
-    <h1 class="text-center mb-4">Editar Paciente</h1>
+        <div class="table-title">
+            <h1>Editar Paciente</h1>
+        </div>
 
     <a href="{{ route('admin.patient.index') }}" class="btn btn-secondary mb-3">
         <i class="bi bi-arrow-left-circle"></i> Volver a la lista de pacientes

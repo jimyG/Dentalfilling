@@ -1,20 +1,139 @@
-.counter-card {
-    background: #56a2d5;
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
 
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px 12px 45px; /* Espacio adicional para el ícono */
+  border: none;
+  border-radius: 8px; /* Borde cuadrado con leve redondeo */
+  background-color: #f1f1f1;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-input:focus {
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-wrapper i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.search-input:focus + i {
+  color: #007bff;
+}
+
+/* Estilos generales para el banner */
+.container-banner {
+  display: flex;               /* Usamos flexbox para centrar el contenido */
+  justify-content: center;     /* Centra horizontalmente el banner */
+  align-items: center;         /* Centra verticalmente el contenido */
+  padding: 20px;               /* Espacio alrededor del contenedor */
+  width: 100%;                 /* El contenedor ocupa todo el ancho */
+}
+
+#banner {
+  background: linear-gradient(to right, #514ca7, #8d98c6);  /* Fondo degradado de izquierda a derecha */
+  padding: 10px;              /* Espacio interno */
+  border-radius: 10px;        /* Borde redondeado */
+  text-align: center;         /* Centrar el texto */
+  width: 95%;                 /* Ancho específico del banner */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+  margin: 0 auto;             /* Centrar el banner horizontalmente */
+  color: white;               /* Color del texto en blanco */
+  font-family: 'Roboto', sans-serif;  /* Aplicar la fuente Roboto */
+}
+
+/* Estilos específicos para el título y el párrafo */
+#banner h2 {
+  font-weight: 850;           /* Negrita para el título */
+  
+}
+
+#banner p {
+  font-weight: 400;           /* Peso normal para el párrafo */
+  margin: 0;                  /* Eliminar márgenes por defecto */
+}
+
+#doctor-name {
+  font-size: 24px; /* Ajusta el tamaño según tus necesidades */
+  color: #ffffff; /* Cambia el color si lo deseas */
+}
+
+/* Responsivo para pantallas más pequeñas */
+@media (max-width: 768px) {
+  #banner {
+      width: 100%;            /* En pantallas pequeñas, el banner ocupa todo el ancho */
+      padding: 15px;          /* Reducimos ligeramente el padding */
+  }
+}
+
+
+.container-dashboard {
+  background: #ffffff; /* Color de fondo blanco */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(123, 72, 241, 0.2); /* Sombra sutil */
+  padding: 20px; /* Espacio interno */
+  margin: 50px auto; /* Margen superior e inferior */
+  height: 600px; /* Altura automática, puede ser ajustada dinámicamente */
+  max-width: 1200px; /* Ancho máximo para mantener la estética */
+}
+
+
+.counter-card {
+    background: rgba(255, 255, 255, 0.8); /* Cambiar a rgba para aplicar transparencia */
     border-radius: 10px;
     padding: 10px; /* Reduce el padding si es necesario */
     margin: 10px; /* Ajusta el margen */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; /* Transición suave */
     color: white;
-    word-wrap: break-word; /* Permitir que el texto se ajuste a la línea */
     text-align: center; /* Centrar el contenido */
     display: flex; /* Usar flex para alinear iconos y texto */
+    position: relative; /* Para manejar la posición del detalle */
+    overflow: hidden;   /* Evita el desbordamiento durante la animación */
+    transition: height 0.3s ease; /* Efecto de transición para el cambio de altura */
+    gap: 10px; /* Reduce el espacio entre los lados */
+    align-items: center; /* Centra verticalmente el contenido */
+}
+
+.details {
+  display: none; /* Ocultar por defecto */
+  opacity: 0;    /* Hacer invisible por defecto */
+  transition: opacity 0.3s ease; /* Efecto de transición para la opacidad */
+}
+
+.details.show {
+  display: block; /* Mostrar cuando está activo */
+  opacity: 1;     /* Hacer visible */
+}
+
+.counter-card.expanded {
+  height: 200px; /* Ajusta según la altura del contenido que quieras mostrar */
 }
 
 .counter-card:hover {
-    transform: scale(1.05); /* Efecto de escala */
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+  transform: scale(1.05); /* Efecto de escala */
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25); /* Sombra más atractiva */
 }
 
 /* Cambia el color del texto al hacer hover sobre el contenedor */
@@ -23,28 +142,91 @@
     color: #ffd700; /* Cambia el color del texto al hacer hover */
 }
 
-.counter-card .iconBx i {
-    font-size: 40px; /* Ajustar el tamaño del ícono */
-    color: #f7f7f7; /* Color blanco casi completo para mejor contraste */
-    margin-bottom: 15px; /* Ajustar el margen inferior */
-    transition: color 0.3s ease;
+.iconBx {
+  border-radius: 50%; /* Para hacer el contenedor circular */
+  width: 60px; /* Ancho del círculo */
+  height: 60px; /* Altura del círculo */
+  display: flex; /* Centrar el icono dentro del círculo */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
 }
 
-.counter-card:hover .iconBx i {
-    color: #ffd700; /* Color dorado al hacer hover para resaltar el ícono */
+/* Fondo único y suave para cada contador */
+#doctorCounter {
+  background-color: rgba(198, 93, 114, 0.1); /* Fondo suave cereza (doctores) */
 }
+
+#patientCounter {
+  background-color: rgba(35, 136, 245, 0.1); /* Fondo suave azul (pacientes) */
+}
+
+#specialtyCounter {
+  background-color: rgba(128, 0, 128, 0.1); /* Fondo suave morado (especialidades) */
+}
+
+/* Fondo único para cada icono */
+#doctorIconBx {
+  background-color: #e7385b; /* Color cereza para el icono de doctores */
+}
+
+#patientIconBx {
+  background-color: #308aec; /* Color azul fuerte para el icono de pacientes */
+}
+
+#specialtyIconBx {
+  background-color: #c13ec1; /* Color morado para el icono de especialidades */
+}
+
+.iconBx i {
+  color: white; /* Color del icono */
+  font-size: 40px; /* Tamaño del icono */
+}
+
 
 .counter-card .numbers {
-    font-size: 2rem; /* Ajusta el tamaño del texto */
-    margin: 0;
-    color: #f7f7f7; /* Un blanco más brillante */
-    letter-spacing: 1px;
+    color: #000000; /* Un blanco más brillante */
+    font-size: 2em;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif; /* Fuente de Google */
 }
 
 .counter-card .cardName {
     font-size: 1.25rem; /* Ajusta el tamaño del texto */
-    color: #e0e0e0; /* Color más claro para el texto secundario */
+    color: #000000; /* Color más claro para el texto secundario */
     margin-top: 10px;
+}
+
+/* Estilos para la barra de progreso circular */
+.progress-container {
+  margin-left: 20px; /* Espacio entre el texto y la barra de progreso */
+}
+
+.progress-circle {
+  height: 80px;
+  width: 80px;
+  background: conic-gradient(
+      #1d7268 0%,
+      #0575E6 75%, /* Progreso inicial al 75% */
+      rgba(0, 0, 0, 0.1) 75%
+  );
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  height: 60px;
+  width: 60px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 
@@ -81,12 +263,15 @@
 
 /* =========== Google Fonts ============ */
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 
 /* =============== Globals ============== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 :root {
@@ -108,17 +293,56 @@ body {
 .container {
   position: relative;
   width: 100%;
+  max-width: 1200px; /* Ancho máximo para pantallas grandes */
+  background: #ffffff; /* Color de fondo blanco */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(159, 142, 241, 0.3); /* Sombra del input */
+  padding: 20px; /* Espacio interno */
+  margin: 20px auto; /* Margen superior e inferior */
+}
+
+/* Hacer que el texto y los botones sean responsivos */
+
+
+.form-group {
+  margin-bottom: 15px; /* Espacio entre los grupos de formularios */
+}
+
+
+
+/* Responsivo para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px; /* Reducir padding en pantallas pequeñas */
+  }
+  
+  h2 {
+    font-size: 1.25em; /* Ajustar tamaño de fuente del título */
+  }
+  
+  .form-group {
+    margin-bottom: 10px; /* Ajustar margen inferior */
+  }
+
+  .btn {
+    font-size: 0.9em; /* Ajustar tamaño de fuente del botón */
+  }
 }
 
 /* =============== Navigation ================ */
+
+#custom-body {
+  background-color: #7667c2; /* Fondo negro */
+}
 .navigation {
   position: fixed;
   width: 300px;
   height: 100%;
-  background:  #00AEB1;
-  border-left: 10px solid #00AEB1 ;
+  background:#7b6bc8; /* Degradado de arriba a abajo */
+  border-left: 10px solid ;
   transition: 0.5s;
   overflow: hidden;
+  z-index: 1000; /* Asegura que esté sobre otros elementos */
 }
 .navigation.active {
   width: 80px;
@@ -217,9 +441,11 @@ body {
   position: absolute;
   width: calc(100% - 300px);
   left: 300px;
-  min-height: 100vh;
-  background: var(--white);
-  transition: 0.5s;
+  min-height: 90vh;
+  background-color: #edeaf9;
+
+  border-top-left-radius: 30px; /* Borde redondeado en la esquina superior izquierda */
+  border-bottom-left-radius: 30px; /* Borde redondeado en la esquina inferior izquierda */
 }
 .main.active {
   width: calc(100% - 80px);
@@ -228,11 +454,11 @@ body {
 
 .topbar {
   width: 100%;
-  height: 60px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 10px;
 }
 
 .toggle {
@@ -324,9 +550,47 @@ body {
 
 .navigation ul li:hover a,
 .navigation ul li.hovered a {
-  color: var(--blue);
+  color:  #351663;
   transform: scale(1.1); /* Aumenta el tamaño al 110% */
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body, form, label {
+    font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el body, los formularios y las etiquetas */
+}
+
+label {
+    font-size: 1.1rem; /* Ajusta el tamaño de las etiquetas */
+    font-weight: 500; /* Estilo seminegrita para destacar las etiquetas */
+    color: #333; /* Color oscuro para las etiquetas */
+    margin-bottom: 8px; /* Espacio bajo las etiquetas */
+}
+
+input, textarea {
+    font-size: 1rem; /* Tamaño estándar de fuente para los campos de entrada */
+    padding: 10px;
+    border-radius: 5px; /* Borde redondeado para los campos */
+    border: 1px solid #ccc; /* Borde claro */
+    box-shadow: 0 4px 6px rgba(118, 103, 194, 0.3); /* Sombra del input */
+}
+
+button {
+    font-family: 'Poppins', sans-serif; /* Aplica la fuente también al botón */
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #7163ba; /* Color de fondo personalizado */
+    border: none;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5e4fb1; /* Cambio de color al pasar el mouse */
+}
+
 
 
 .main {
@@ -344,6 +608,15 @@ body {
 }
 
 /* Estilos para las tablas y fuentes */
+.form-container {
+  max-width: 1050px; /* Ancho máximo del formulario */
+  margin: 20px 0 20px 50px; /* Margen superior e inferior de 20px, y margen izquierdo de 50px */
+  background: #f8f8f8; /* Fondo azul */
+  padding: 20px; /* Espacio interno */
+  border-radius: 10px; /* Esquinas redondeadas */
+  border: 2px solid #e4e4e4; /* Borde azul más oscuro */
+  box-shadow: 0px 4px 8px rgba(97, 78, 243, 0.1); /* Sombra sutil para darle profundidad */
+}
 
 /* Estilo para todas las tablas */
 table {
@@ -352,12 +625,12 @@ table {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 20px;
-  font-family: 'Roboto', sans-serif; /* Fuente moderna */
+  font-family:"Poppins", sans-serif;
 }
 
 /* Estilo para el encabezado de la tabla */
 table thead th {
-  background-color:  #00AEB1; /* Color oscuro elegante */
+  background-color: #7163ba; /* Color oscuro elegante */
   color: #ecf0f1; /* Texto claro para contraste */
   text-align: center;
   padding: 12px 15px;
@@ -365,6 +638,27 @@ table thead th {
   font-size: 16px;
   text-transform: uppercase;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+.table-title {
+    background-color: #7d6ec5;
+    padding: 15px 20px; 
+    border-radius: 8px;
+    width: fit-content; /* El ancho del div se ajusta al contenido */
+    margin: 0 auto 20px auto; /* Centra el div horizontalmente */
+    text-align: center; /* Centra el texto dentro del div */
+}
+
+.table-title h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+    letter-spacing: 2px;
+    margin: 0;
+    font-weight: 700;
+}
+
 
 /* Estilo para las celdas del cuerpo de la tabla */
 table tbody td {
@@ -433,4 +727,191 @@ table tbody tr:hover {
   background-color: #ecf0f1;
 }
 
+/* Estilos para odontograma y contenido */
 
+.select-odontograma select {
+  width: 500px; /* Ajusta el tamaño según lo necesites */
+  padding: 5px; /* Espaciado interno opcional */
+}
+
+.odontograma h3 {
+  font-size: 15px; /* Tamaño de fuente */
+  font-family: 'Arial', sans-serif; /* Tipo de fuente */
+  color: #333; /* Color de la fuente */
+  margin-bottom: 35px; /* Espacio debajo del título */
+  text-align: center; /* Centrar el texto */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  font-weight: bold; /* Negrita */
+}
+
+.form-odontograma {
+  max-width: 1130px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+select {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.odontograma {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cuadrantes por fila */
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.cuadrante {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.dientes {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 4 dientes por fila */
+  gap: 5px;
+}
+
+.diente {
+  width: 60px; /* tamaño ajustado */
+  height: 70px; /* tamaño ajustado */
+  border: 2px solid #333;
+  border-radius: 50%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  background-color: #fafafa;
+  transition: transform 0.3s ease;
+}
+
+.diente:hover {
+  transform: scale(1.05);
+}
+
+.area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: center;
+  font-size: 12px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+}
+
+.area[data-area="superior"] {
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  border-top-left-radius: 20%;
+  border-top-right-radius: 20%;
+}
+
+.area[data-area="izquierda"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.area[data-area="centro"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.area[data-area="derecha"] {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.area[data-area="inferior"] {
+  grid-column: 1 / span 3;
+  grid-row: 3;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
+}
+
+.area:hover {
+  background-color: #e0e0e0;
+}
+
+.numero-diente {
+  position: absolute;
+  top: -30px; /* Ajusta este valor para separarlo más del diente */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0c9ecf;
+  color: white;
+  width: 25px; /* Ancho fijo */
+  height: 25px; /* Altura fija */
+  border-radius: 50%; /* Hace que sea un círculo */
+  display: flex; /* Para centrar el contenido */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px; /* Opcional: espacio adicional debajo del número */
+}
+
+
+
+
+.icon-container {
+  width: 30px; /* Ajusta el tamaño del cuadrado */
+  height: 30px; /* Ajusta el tamaño del cuadrado */
+  background-color: rgba(255, 0, 0, 0.2); /* Fondo claro para paciente */
+  border-radius: 5px; /* Bordes redondeados */
+  display: flex;
+  justify-content: center; /* Centra el ícono horizontalmente */
+  align-items: center; /* Centra el ícono verticalmente */
+  margin-right: 5px; /* Espacio entre el ícono y el texto */
+  display: inline-flex; /* Mantener en línea con el texto */
+}
+
+.paciente .icon-container {
+  background-color: rgba(255, 0, 0, 0.2); /* Fondo rojo claro */
+}
+
+.paciente .icon-container i {
+  color: #FF0000; /* Color rojo para el ícono */
+  font-size: 18px; /* Tamaño del ícono */
+}
+
+.tratamiento .icon-container {
+  background-color: rgba(128, 0, 128, 0.2); /* Fondo morado claro */
+}
+
+.tratamiento .icon-container i {
+  color: #800080; /* Color morado para el ícono */
+  font-size: 18px; /* Tamaño del ícono */
+}

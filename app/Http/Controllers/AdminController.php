@@ -112,13 +112,13 @@ class AdminController extends Controller
         'password' => 'required|min:8|confirmed', // Asegura que la confirmación de la contraseña coincida
         'dui' => 'required|string|max:10|unique:medicos,dui',
         'edad' => 'required|integer|min:18',
-        'LicenseNumber' => 'required|numeric|digits:4', // Asegura que el número de licencia sea de 4 dígitos
+        'LicenseNumber' => 'required|string|unique:medicos,LicenseNumber|max:4', // Verifica la unicidad
         'address' => 'required|string|max:255',
         'phone' => 'required|string|size:8', // Asume que el teléfono tiene 8 dígitos
     ], [
         'dui.unique' => 'El DUI ingresado ya está en uso. Por favor, ingresa otro.',
         'LicenseNumber.unique' => 'El número de licencia ingresado ya está en uso. Por favor, ingresa otro.', // Mensaje personalizado
-        'LicenseNumber.digits' => 'El número de licencia debe ser de 4 dígitos.',
+        'LicenseNumber.unique' => 'El número de licencia ingresado ya está en uso. Por favor, ingresa otro.',
         'email.unique' => 'El email ingresado ya está en uso. Por favor, ingresa otro.'
     ]);
 

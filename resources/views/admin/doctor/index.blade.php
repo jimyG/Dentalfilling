@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="container">
-        <h1>Médicos</h1>
+    <div class="">
+        <div class="table-title">
+            <h1>Medicos</h1>
+        </div>
+        </div>
         <a href="{{ route('admin.doctor.create') }}" class="btn btn-primary mb-3">
             <i class="bi bi-plus-circle"></i> Nuevo Médico
         </a>

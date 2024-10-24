@@ -2,7 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h2>Gestión de Usuarios</h2>
+        <div class="table-title">
+            <h1>Gestion de Usuarios</h1>
+        </div>
     @if (session('success'))
         <script>
             Swal.fire({

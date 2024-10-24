@@ -159,6 +159,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Barryvdh\DomPDF\ServiceProvider::class, // Añade esta línea para dompdf
+        Spatie\Backup\BackupServiceProvider::class, // Añadir esta línea para Spatie Backup
+
 
         /*
          * Application Service Providers...
@@ -168,6 +171,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
     ])->toArray(),
 
     /*
@@ -183,6 +187,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class, // Alias para usar PDF
+        'Backup' => Spatie\Backup\BackupFacade::class, // Alias de la Facade de Spatie Backup
     ])->toArray(),
 
 ];

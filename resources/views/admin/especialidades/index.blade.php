@@ -6,7 +6,9 @@
 
 </head>
     <div class="container  padding: 20px; border-radius: 10px; height: calc(100vh - 40px); margin: 20px 0;">
-        <h1>Especialidades</h1>
+        <div class="table-title">
+            <h1>Especialidades</h1>
+        </div>
         <a href="{{ route('admin.especialidades.create') }}" class="btn btn-primary mb-3">
             <i class="bi bi-plus-circle"></i> Nueva Especialidad
         </a>
@@ -79,3 +81,4 @@
         }
     </script>
 @endsection
+

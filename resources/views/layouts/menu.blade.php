@@ -10,36 +10,42 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<body>
+<body id="custom-body">
  
     <!-- =============== Navigation ================ -->
     <div >
         <!-- Navbar -->
-        <nav id="custom-navbar" class="navbar navbar-expand-lg fixed-top navbar-light  justify-content-between" style="padding: 0.5rem 1rem;"> <!-- Ajusta el padding aquí -->
+        <nav id="custom-navbar" class="navbar navbar-expand-lg fixed-top navbar-light justify-content-between" style="padding: 0.5rem 1rem;">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('img/logo.png') }}" width="300" height="70">
             </a>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-            <div class="media align-items-center">
-                <img src="{{ asset('img/logo1.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
-            </div>
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ Auth::user()->name }}
-            </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    {{ __('Cerrar Sesión') }}
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </div>
-        </li>
-    </ul>
-</nav>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="media align-items-center">
+                            <img src="{{ asset('img/logo1.png') }}" alt="Logo" width="40" height="40" class="rounded-circle">
+                            {{ Auth::user()->name }}
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Cerrar Sesión') }}
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+
+
 
         <!-- ========================= Sidebar ==================== -->
         <div class="navigation">
@@ -89,7 +95,7 @@
                         <span class="icon">
                             <i class="bi bi-person-lines-fill"></i> <!-- Icono de nuevo paciente -->
                         </span>
-                        <span class="title">Nuevo Paciente</span>
+                        <span class="title">Paciente</span>
                     </a>
                 </li>
                 <li>
@@ -97,7 +103,7 @@
                         <span class="icon">
                             <i class="bi bi-person-badge"></i> <!-- Icono de nuevo médico -->
                         </span>
-                        <span class="title">Nuevo Médico</span>
+                        <span class="title">Médico</span>
                     </a>
                 </li>
                 <li>
@@ -109,7 +115,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/consent') }}">
+                <a href="{{ route('admin.consentimientos.create') }}">
                         <span class="icon">
                             <i class="bi bi-file-earmark-text"></i> <!-- Icono de consentimiento informado -->
                         </span>
@@ -138,7 +144,8 @@
             
 
             <!-- Main Content -->
-            <main class="content py-4">
+
+            <main class="content">
                 @yield('content')
             </main>
         </div>

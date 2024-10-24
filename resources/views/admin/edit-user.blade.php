@@ -2,7 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h2>Editar Usuario</h2>
+        <div class="table-title">
+            <h1>Editar Usuario</h1>
+        </div>
     <div class="content">
 
     <form method="POST" action="{{ route('admin.updateUser', $user->id) }}">

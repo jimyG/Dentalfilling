@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BackupController;
+use App\Http\Controllers\ConsentimientoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PatientController;
@@ -82,9 +84,7 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
     Route::get('admin/patient/{id}/edit', [PatientController::class, 'edit'])->name('admin.patient.edit');
 
     Route::delete('/admin/patients/{paciente}/regions/{region}', [PatientController::class, 'destroyRegion'])->name('admin.patient.regions.destroy');
-   // Route::delete('admin/patients/{patientId}/regions/{regionId}', [AdminController::class, 'destroyRegion'])->name('admin.patient.destroyRegion');
-
-   // Route::delete('admin/paciente/{paciente}/region/{region_id}', [PatientController::class, 'removeRegion'])->name('admin.patient.remove_region');
+   
 
     // Ruta para actualizar los datos
     Route::put('admin/patient/{id}', [PatientController::class, 'update'])->name('admin.patient.update');
@@ -99,21 +99,22 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
         Route::delete('/{id}', [AdminController::class, 'destroyDoctor'])->name('destroy'); // Eliminar un médico
     });
 
-    // Rutas para Odontograma
-    Route::prefix('admin/odontograma')->name('admin.odontograma.')->group(function () {
-        Route::get('/', [AdminController::class, 'indexOdontograma'])->name('index'); // Llama al método desde AdminController
-        Route::post('/tooth-surfaces', [ToothSurfaceController::class, 'store'])->name('tooth-surfaces.store');
-        Route::get('/create', [AdminController::class, 'createOdontograma'])->name('create'); // Llama al método create de AdminController
-        Route::post('/', [AdminController::class, 'storeOdontograma'])->name('store'); // Llama al método store de AdminController
-        Route::get('/{id}/edit', [AdminController::class, 'editOdontograma'])->name('edit'); // Llama al método edit de AdminController
-        Route::put('/{id}', [AdminController::class, 'updateOdontograma'])->name('update'); // Llama al método update de AdminController
-        Route::delete('/{id}', [AdminController::class, 'destroyOdontograma'])->name('destroy'); // Llama al método destroy de AdminController
-    });
+// Grupo de rutas para el módulo de Odontograma
+Route::prefix('admin')->group(function () {
+    Route::get('/odontograma', [OdontogramaController::class, 'index'])->name('admin.odontograma.index');
+    Route::get('/odontograma/create', [OdontogramaController::class, 'create'])->name('admin.odontograma.create'); // Ruta para mostrar el formulario de creación
+    Route::post('/odontograma', [OdontogramaController::class, 'store'])->name('admin.odontograma.store');
+    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+});
 
-    // Ruta para obtener datos del diente
-    Route::get('/tooth-surfaces/{id}', [ToothSurfaceController::class, 'getToothSurfaces']);
-    Route::post('/tooth-surfaces/store', [ToothSurfaceController::class, 'store'])->name('tooth-surfaces.store');
 
-    Route::get('/doctors', [AdminController::class, 'getDoctors'])->name('doctors.list');
-    Route::get('/patients', [AdminController::class, 'getPatients'])->name('patients.list');
+// Rutas para Consentimiento Informado
+Route::prefix('admin/consentimientos')->name('admin.consentimientos.')->group(function () {
+    Route::get('/', [ConsentimientoController::class, 'index'])->name('index'); // Listado de consentimientos
+    Route::get('/crear', [ConsentimientoController::class, 'create'])->name('create'); // Muestra el formulario de creación
+    Route::post('/', [ConsentimientoController::class, 'store'])->name('store'); // Almacena el consentimiento informado
+    Route::get('/pdf/{id}', [ConsentimientoController::class, 'generatePDF'])->name('pdf'); // Genera el PDF del consentimiento
+});
+
+Route::get('/admin/backup', [BackupController::class, 'createBackup'])->name('admin.backup');
 });

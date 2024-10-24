@@ -6,7 +6,9 @@
 
 
         <div class="content">
-            <h1>Editar Especialidad</h1>
+        <div class="table-title">
+            <h1>Editar Especialidades</h1>
+        </div>
 
     <form action="{{ route('admin.especialidades.update', $especialidad->id) }}" method="POST">
         @csrf

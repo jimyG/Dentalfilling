@@ -20,7 +20,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="container">
-    <h1>Pacientes</h1>
+        <div class="table-title">
+            <h1>Pacientes</h1>
+        </div>
     
     <!-- Formulario de búsqueda centrado -->
     
@@ -38,7 +40,7 @@
 
     <!-- Hacer la tabla responsive -->
     <div class="table-responsive">
-        <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);">
             <thead class="table-info">
                 <tr>
                     <th class="text-center">ID</th>

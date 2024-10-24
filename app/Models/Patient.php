@@ -45,8 +45,13 @@ class Patient extends Model
 
 
     public function evaluacionRegional()
-{
-    return $this->hasMany(EvaluacionRegional::class, 'patient_id');
-}
+    {
+        return $this->hasMany(EvaluacionRegional::class, 'patient_id');
+    }
+
+    public function odontogramas()
+    {
+        return $this->hasMany(Odontograma::class, 'patient_id'); // Relación 1:N con odontograma
+    }
 
 }
