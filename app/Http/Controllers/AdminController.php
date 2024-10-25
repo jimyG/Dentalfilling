@@ -13,6 +13,8 @@ use App\Models\EvaluacionClinica;
 use App\Models\EvaluacionRegional; // Asegúrate de importar el modelo
 use App\Models\ExamenesClinicos;
 use App\Models\Medico;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -38,7 +40,7 @@ class AdminController extends Controller
     // Formulario para crear usuario
     public function createUserForm()
     {
-        return view('admin.create-user');
+        return view('admin.usuarios.create-user');
     }
 
     // Crear usuario
@@ -63,7 +65,7 @@ class AdminController extends Controller
             $user->roles()->attach($role);
         }
 
-        return redirect()->route('admin.createUserForm')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('admin.usuarios.manage-users')->with('success', 'Usuario creado exitosamente.');
     }
 
     // Eliminar usuario
@@ -138,6 +140,34 @@ class AdminController extends Controller
 
         // Redirigir con mensaje de éxito
         return redirect()->route('admin.doctor.index')->with('success', 'Médico creado con éxito.');
+    }
+
+    // Método para generar el PDF
+    // Método para generar el PDF
+    public function generarPDF()
+    {
+        // Obtiene todas las especialidades
+        $especialidades = Especialidad::all();
+
+        // Cargar la vista y pasarle las especialidades
+        $pdfView = view('admin.especialidades.reporte_especialidades', compact('especialidades'))->render();
+
+        // Inicializar Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+
+        // Cargar el contenido HTML
+        $dompdf->loadHtml($pdfView);
+
+        // Configurar tamaño y orientación
+        $dompdf->setPaper('A4', 'landscape'); // Cambia 'landscape' a 'portrait' si prefieres vertical
+
+        // Renderizar el PDF
+        $dompdf->render();
+
+        // Salida del PDF (puedes cambiar a false para ver en el navegador)
+        return $dompdf->stream('reporte_especialidades.pdf', ['Attachment' => true]);
     }
 
     public function editDoctor($id)
@@ -362,13 +392,41 @@ public function destroyPaciente($id)
     }
 }
 
+    // Método para generar el PDF de pacientes
+    public function generarPDFPacientes()
+    {
+        // Obtiene todos los pacientes
+        $pacientes = Patient::all();
+    
+        // Cargar la vista y pasarle los pacientes
+        $pdfView = view('admin.pacientes.reporte_pacientes', compact('pacientes'))->render();
+    
+        // Inicializar Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+    
+        // Cargar el contenido HTML
+        $dompdf->loadHtml($pdfView);
+    
+        // Configurar tamaño y orientación
+        $dompdf->setPaper('A4', 'landscape'); // Cambia 'landscape' a 'portrait' si prefieres vertical
+    
+        // Renderizar el PDF
+        $dompdf->render();
+    
+        // Salida del PDF
+        return $dompdf->stream('reporte_pacientes.pdf', ['Attachment' => true]);
+    }
+    
+
 
 
     // Gestionar usuarios
     public function manageUsers()
     {
         $users = User::all();
-        return view('admin.manage-users', compact('users'));
+        return view('admin.usuarios.manage-users', compact('users'));
     }
 
     // Actualizar usuario

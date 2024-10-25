@@ -7,9 +7,17 @@
             <h1>Medicos</h1>
         </div>
         </div>
-        <a href="{{ route('admin.doctor.create') }}" class="btn btn-primary mb-3">
-            <i class="bi bi-plus-circle"></i> Nuevo Médico
-        </a>
+        <div class="header-form d-flex justify-content-between mb-3">
+            <!-- Botón Nuevo Doctor alineado a la izquierda -->
+            <a href="{{ route('admin.doctor.create') }}" class="btn btn-primary mb-3">
+                <i class="bi bi-plus-circle"></i> Nuevo Médico
+            </a>
+
+            <!-- Botón Imprimir alineado a la derecha -->
+            <button class="btn btn-secondary">
+                <i class="bi bi-printer"></i> Imprimir
+            </button>
+        </div>
 
         <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <thead class="table-info">

@@ -2,7 +2,16 @@
 
 @section('content')
 <div class="container">
-    <h1>Crear Nuevo Paciente</h1>
+        <div id="title-wrapper" class="d-flex align-items-start">
+            <a href="{{ url('/admin/patient') }}" id="icon-link" class="me-3">
+                <div id="custom-icon-container">
+                    <i class="bi bi-house-fill"></i>
+                </div>
+            </a>
+            <div class="table-title">
+                <h1>Crear Nuevo Paciente</h1>
+            </div>
+        </div>
 
     @if ($errors->any())
         <div class="alert alert-danger">

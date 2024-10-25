@@ -332,13 +332,13 @@ body {
 /* =============== Navigation ================ */
 
 #custom-body {
-  background-color: #7667c2; /* Fondo negro */
+  background-color: #7b6bc8; 
 }
 .navigation {
   position: fixed;
   width: 300px;
   height: 100%;
-  background:#7b6bc8; /* Degradado de arriba a abajo */
+  background:#7b6bc8; 
   border-left: 10px solid ;
   transition: 0.5s;
   overflow: hidden;
@@ -619,6 +619,24 @@ button:hover {
 }
 
 /* Estilo para todas las tablas */
+.role-admin {
+  background-color: #3fa7f1; /* Fondo azul para Administrador */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.role-medico {
+  background-color: #37cd5a; /* Fondo verde para Médico */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  display: inline-block;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -638,6 +656,42 @@ table thead th {
   font-size: 16px;
   text-transform: uppercase;
 }
+
+.custom-pagination .pagination {
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+}
+
+.custom-pagination .pagination li {
+    margin: 0 5px;
+}
+
+.custom-pagination .pagination li a {
+    color: #007bff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.custom-pagination .pagination li a:hover {
+    background-color: #e9ecef;
+}
+
+.custom-pagination .pagination .active span {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+.custom-pagination .pagination .disabled span {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 
@@ -884,6 +938,41 @@ button:hover {
 }
 
 
+#title-wrapper {
+  display: flex; /* Usar flexbox para alinear elementos */
+  justify-content: space-between; /* Espacio entre el ícono y el título */
+  align-items: flex-start; /* Alinear el ícono y el título al inicio */
+  padding: 20px; /* Espacio alrededor del contenedor */
+}
+
+#icon-link {
+  display: flex; /* Usar flexbox para centrar el ícono */
+}
+
+#custom-icon-container {
+  width: 40px; /* Ancho del fondo cuadrado */
+  height: 40px; /* Alto del fondo cuadrado */
+  background-color: #4fd0bf; /* Color de fondo más claro (cereza claro) */
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  border-radius: 8px; /* Bordes redondeados (opcional) */
+}
+
+#custom-icon-container i {
+  color: #ffffff; /* Color del ícono más oscuro (cereza oscuro) */
+  font-size: 20px; /* Tamaño del ícono */
+}
+
+#title-container {
+  flex-grow: 1; /* Permitir que el contenedor del título crezca */
+  display: flex; /* Usar flexbox para centrar el título */
+  justify-content: center; /* Centrar horizontalmente */
+}
+
+#title-container h1 {
+  margin: 0; /* Eliminar margen por defecto del h1 */
+}
 
 
 .icon-container {
@@ -915,3 +1004,4 @@ button:hover {
   color: #800080; /* Color morado para el ícono */
   font-size: 18px; /* Tamaño del ícono */
 }
+

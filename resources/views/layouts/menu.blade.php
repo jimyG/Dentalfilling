@@ -67,19 +67,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/create-user') }}">
-                        <span class="icon">
-                            <i class="bi bi-person-plus"></i> <!-- Icono de agregar usuarios -->
-                        </span>
-                        <span class="title">Agregar Usuarios</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{{ url('/admin/manage-users') }}">
                         <span class="icon">
                             <i class="bi bi-people"></i> <!-- Icono de gestionar usuarios -->
                         </span>
-                        <span class="title">Gestionar Usuarios</span>
+                        <span class="title">Usuarios</span>
                     </a>
                 </li>
                 <li>
@@ -115,7 +107,7 @@
                     </a>
                 </li>
                 <li>
-                <a href="{{ route('admin.consentimientos.create') }}">
+                <a href="{{ route('admin.consentimientos.index') }}">
                         <span class="icon">
                             <i class="bi bi-file-earmark-text"></i> <!-- Icono de consentimiento informado -->
                         </span>

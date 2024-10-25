@@ -32,11 +32,17 @@
         <i class="bi bi-search"></i>
     </button>
 </div>
-    
+        <div class="header-form d-flex justify-content-between mb-3">
+            <!-- Botón Nueva Especialidad alineado a la izquierda -->
+            <a href="{{ route('admin.patient.create') }}" class="btn btn-primary mb-3">
+                <i class="bi bi-plus-circle"></i> Nuevo Paciente
+            </a>
 
-    <a href="{{ route('admin.patient.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo Paciente
-    </a>
+            <!-- Botón Imprimir alineado a la derecha -->
+            <a href="{{ route('admin.patient.pdf') }}" class="btn btn-secondary">
+                <i class="bi bi-printer"></i> Imprimir
+            </a>
+        </div>
 
     <!-- Hacer la tabla responsive -->
     <div class="table-responsive">

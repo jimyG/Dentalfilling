@@ -5,6 +5,18 @@
         <div class="table-title">
             <h1>Gestion de Usuarios</h1>
         </div>
+        <div class="header-form d-flex justify-content-between mb-3">
+            <!-- Botón Nuevo Usuario alineado a la izquierda -->
+            <a href="{{ url('/admin/create-user') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nuevo Usuario
+            </a>
+
+            <!-- Botón Imprimir alineado a la derecha -->
+            <a href="{{ route('users.report') }}" class="btn btn-secondary">
+                <i class="bi bi-printer"></i> Imprimir
+            </a>
+        </div>
+
     @if (session('success'))
         <script>
             Swal.fire({
@@ -48,7 +60,13 @@
                     <td>{{ $user->email }}</td>
                     <td>
                         @foreach ($user->roles as $role)
-                            {{ $role->name }}@if (!$loop->last), @endif
+                            @if ($role->name == 'Administrador')
+                                <span class="role-admin">{{ $role->name }}</span>
+                            @elseif ($role->name == 'Médico')
+                                <span class="role-medico">{{ $role->name }}</span>
+                            @else
+                                <span>{{ $role->name }}</span>
+                            @endif
                         @endforeach
                     </td>
                     <td>
@@ -68,10 +86,22 @@
             @endforeach
         </tbody>
     </table>
-</div>
 
-<!-- SweetAlert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div>
+<!-- Incluir SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+@endif
+
 
 <script>
     function confirmDelete(userId) {
@@ -91,6 +121,5 @@
         });
     }
 </script>
-<!-- SweetAlert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @endsection

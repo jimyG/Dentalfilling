@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $user->roles()->attach(Role::where('name', $validatedData['role'])->first());
 
-        return redirect()->route('admin.create-user')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('admin.usuarios.manage-users')->with('success', 'Usuario creado exitosamente.');
     }
 
     /**
@@ -48,7 +48,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::all(); // Obtenemos todos los roles para el select
 
-        return view('admin.edit-user', compact('user', 'roles'));
+        return view('admin.usuarios.edit-user', compact('user', 'roles'));
     }
 
     /**
@@ -83,7 +83,7 @@ class UserController extends Controller
         // Actualizar el rol del usuario
         $user->roles()->sync(Role::where('name', $validatedData['role'])->first());
 
-        return redirect()->route('admin.manageUsers')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('admin.usuarios.manage-users')->with('success', 'Usuario actualizado exitosamente.');
     }
 
     /**
@@ -99,9 +99,9 @@ public function destroy($id)
         $user->delete(); // Eliminar el usuario
 
         // Redirigir con mensaje de éxito
-        return redirect()->route('admin.manageUsers')->with('success', 'Usuario eliminado exitosamente.');
+        return redirect()->route('admin.usuarios.manage-users')->with('success', 'Usuario eliminado exitosamente.');
     } catch (\Exception $e) {
-        return redirect()->route('admin.manageUsers')->withErrors(['error' => 'Error al eliminar el usuario: ' . $e->getMessage()]);
+        return redirect()->route('admin.usuarios.manage-users')->withErrors(['error' => 'Error al eliminar el usuario: ' . $e->getMessage()]);
     }
 }
 

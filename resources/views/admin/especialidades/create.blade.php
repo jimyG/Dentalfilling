@@ -2,8 +2,15 @@
 
 @section('content')
 <div class="container">
-        <div class="table-title">
-            <h1>Crear Nueva Especialidad</h1>
+        <div id="title-wrapper" class="d-flex align-items-start">
+            <a href="{{ url('/admin/especialidades') }}" id="icon-link" class="me-3">
+                <div id="custom-icon-container">
+                    <i class="bi bi-house-fill"></i>
+                </div>
+            </a>
+            <div class="table-title">
+                <h1>Crear Nueva Especialidad</h1>
+            </div>
         </div>
         <div class="form-container">
             <form action="{{ route('admin.especialidades.store') }}" method="POST">

@@ -21,9 +21,18 @@
 <div class="form-odontograma">
     <form action="{{ route('admin.odontograma.store') }}" method="POST" id="odontogramaForm" class="odontograma-form">
         @csrf
-        <div class="table-title">
-            <h1>Odontograma</h1>
+        
+        <div id="title-wrapper" class="d-flex align-items-start">
+            <a href="{{ route('admin.odontograma.index') }}" id="icon-link" class="me-3">
+                <div id="custom-icon-container">
+                    <i class="bi bi-house-fill"></i>
+                </div>
+            </a>
+            <div class="table-title">
+                <h1>Odontograma</h1>
+            </div>
         </div>
+    
 
         <div class="select-odontograma" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <!-- Selección de paciente -->

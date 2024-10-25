@@ -8,9 +8,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\EspecialidadesController;
+use App\Http\Controllers\EspecialidadesReportController;
 use App\Http\Controllers\OdontogramaController;
 use App\Http\Controllers\ToothSurfaceController;
 use App\Http\Controllers\UserController; // Importamos el controlador UserController
+use App\Http\Controllers\UserReportController;
 use App\Models\Patient;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,9 +46,11 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
     Route::get('/admin/create-user', [AdminController::class, 'createUserForm'])->name('admin.createUserForm');
     Route::post('/admin/create-user', [AdminController::class, 'createUser'])->name('admin.createUser');
     Route::get('/admin/manage-users', [AdminController::class, 'manageUsers'])->name('admin.manageUsers');
+    Route::get('/admin/manage-users', [AdminController::class, 'manageUsers'])->name('admin.usuarios.manage-users');
     Route::get('/admin/users/{id}/edit', [UserController::class, 'edit'])->name('admin.editUser');
     Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.updateUser');
     Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('admin/usuarios/report', [UserReportController::class, 'generateReport'])->name('users.report');
 
     // Consentimientos y Backups
     Route::get('/admin/consent', [AdminController::class, 'consentForm'])->name('admin.consentForm');
@@ -60,6 +64,7 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
         Route::get('/{id}/edit', [EspecialidadesController::class, 'edit'])->name('edit');
         Route::put('/{id}', [EspecialidadesController::class, 'update'])->name('update');
         Route::delete('/{id}', [EspecialidadesController::class, 'destroy'])->name('destroy');
+        Route::get('/reporte', [AdminController::class, 'generarPDF'])->name('especialidades.pdf');
     });
 
 
@@ -72,6 +77,7 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
         Route::get('/{id}', [PatientController::class, 'show'])->name('show');
          // Ruta para la búsqueda en tiempo real por AJAX
         Route::get('/search', [AdminController::class, 'searchPaciente'])->name('patient.search');
+        Route::get('/pdf', [AdminController::class, 'generarPDFPacientes'])->name('pdf'); // Nueva ruta para generar PDF
 
     });
 
@@ -105,6 +111,13 @@ Route::prefix('admin')->group(function () {
     Route::get('/odontograma/create', [OdontogramaController::class, 'create'])->name('admin.odontograma.create'); // Ruta para mostrar el formulario de creación
     Route::post('/odontograma', [OdontogramaController::class, 'store'])->name('admin.odontograma.store');
     Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+    Route::get('/odontograma', [OdontogramaController::class, 'index'])->name('admin.odontograma.index');
+    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+    Route::get('/admin/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+    Route::delete('odontograma/{id}', [OdontogramaController::class, 'destroy'])->name('odontograma.destroy');
+    Route::get('/odontograma/imprimir', [OdontogramaController::class, 'imprimir'])->name('odontograma.imprimir');
+    
+
 });
 
 
@@ -113,7 +126,9 @@ Route::prefix('admin/consentimientos')->name('admin.consentimientos.')->group(fu
     Route::get('/', [ConsentimientoController::class, 'index'])->name('index'); // Listado de consentimientos
     Route::get('/crear', [ConsentimientoController::class, 'create'])->name('create'); // Muestra el formulario de creación
     Route::post('/', [ConsentimientoController::class, 'store'])->name('store'); // Almacena el consentimiento informado
+    Route::delete('/{id}', [ConsentimientoController::class, 'destroy'])->name('destroy'); // Elimina el consentimiento
     Route::get('/pdf/{id}', [ConsentimientoController::class, 'generatePDF'])->name('pdf'); // Genera el PDF del consentimiento
+    Route::get('/reporte', [ConsentimientoController::class, 'reporteConsentimientos'])->name('reporte'); // Genera el reporte de consentimientos
 });
 
 Route::get('/admin/backup', [BackupController::class, 'createBackup'])->name('admin.backup');

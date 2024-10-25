@@ -9,9 +9,18 @@
         <div class="table-title">
             <h1>Especialidades</h1>
         </div>
-        <a href="{{ route('admin.especialidades.create') }}" class="btn btn-primary mb-3">
-            <i class="bi bi-plus-circle"></i> Nueva Especialidad
-        </a>
+        
+        <div class="header-form d-flex justify-content-between mb-3">
+            <!-- Botón Nueva Especialidad alineado a la izquierda -->
+            <a href="{{ route('admin.especialidades.create') }}" class="btn btn-primary mb-3">
+                <i class="bi bi-plus-circle"></i> Nueva Especialidad
+            </a>
+
+            <!-- Botón Imprimir alineado a la derecha -->
+            <a href="{{ route('admin.especialidades.especialidades.pdf') }}" class="btn btn-secondary">
+                <i class="bi bi-printer"></i> Imprimir
+            </a>
+        </div>
 
         
 

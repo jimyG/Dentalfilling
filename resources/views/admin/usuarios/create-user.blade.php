@@ -2,8 +2,15 @@
 
 @section('content')
 <div class="container">
-        <div class="table-title">
-            <h1>Crear Usuario</h1>
+        <div id="title-wrapper" class="d-flex align-items-start">
+            <a href="{{ url('/admin/manage-users') }}" id="icon-link" class="me-3">
+                <div id="custom-icon-container">
+                    <i class="bi bi-house-fill"></i>
+                </div>
+            </a>
+            <div class="table-title">
+                <h1>Crear Usuario</h1>
+            </div>
         </div>
 
     <!-- Mostrar errores de validación -->
@@ -45,16 +52,18 @@
                 <label for="password">Ingrese una Contraseña</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Crea una contraseña" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Crea una contraseña" maxlength="8" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="password_confirmation">Confirmar Contraseña</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirma tu contraseña" required>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirma tu contraseña" maxlength="8" required>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="role">Rol</label>
                 <div class="input-group">
