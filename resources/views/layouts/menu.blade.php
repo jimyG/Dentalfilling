@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <body id="custom-body">
  
@@ -51,13 +54,10 @@
         <div class="navigation">
             <ul>
                 <li>
-                    <a href="#">
-                        <span class="icon">
-                           <!-- <i class="bi bi-grid"></i>  Icono de menú -->
-                        </span>
-                        <span class="title"></span>
-                    </a>
+                    
                 </li>
+
+                <!-- Inicio: Visible para ambos roles -->
                 <li>
                     <a href="{{ url('/home') }}">
                         <span class="icon">
@@ -66,22 +66,29 @@
                         <span class="title">Inicio</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url('/admin/manage-users') }}">
-                        <span class="icon">
-                            <i class="bi bi-people"></i> <!-- Icono de gestionar usuarios -->
-                        </span>
-                        <span class="title">Usuarios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('/admin/especialidades') }}">
-                        <span class="icon">
-                            <i class="bi bi-journal-medical"></i> <!-- Icono de especialidades -->
-                        </span>
-                        <span class="title">Especialidades</span>
-                    </a>
-                </li>
+
+                <!-- Usuarios: Visible solo para administrador -->
+                
+                    <li>
+                        <a href="{{ url('/admin/manage-users') }}">
+                            <span class="icon">
+                                <i class="bi bi-people"></i> <!-- Icono de gestionar usuarios -->
+                            </span>
+                            <span class="title">Usuarios</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ url('/admin/especialidades') }}">
+                            <span class="icon">
+                                <i class="bi bi-journal-medical"></i> <!-- Icono de especialidades -->
+                            </span>
+                            <span class="title">Especialidades</span>
+                        </a>
+                    </li>
+                
+
+                <!-- Paciente: Visible para ambos roles -->
                 <li>
                     <a href="{{ url('/admin/patient') }}">
                         <span class="icon">
@@ -90,14 +97,8 @@
                         <span class="title">Paciente</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url('/admin/doctor') }}">
-                        <span class="icon">
-                            <i class="bi bi-person-badge"></i> <!-- Icono de nuevo médico -->
-                        </span>
-                        <span class="title">Médico</span>
-                    </a>
-                </li>
+
+                <!-- Odontograma: Visible para ambos roles -->
                 <li>
                     <a href="{{ route('admin.odontograma.index') }}">
                         <span class="icon">
@@ -106,24 +107,52 @@
                         <span class="title">Odontograma</span>
                     </a>
                 </li>
+
+                <!-- Médico: Visible para ambos roles -->
                 <li>
-                <a href="{{ route('admin.consentimientos.index') }}">
+                    <a href="{{ url('/admin/doctor') }}">
+                        <span class="icon">
+                            <i class="bi bi-person-badge"></i> <!-- Icono de nuevo médico -->
+                        </span>
+                        <span class="title">Médico</span>
+                    </a>
+                </li>
+
+                <!-- Consentimiento Informado: Visible para ambos roles -->
+                <li>
+                    <a href="{{ route('admin.consentimientos.index') }}">
                         <span class="icon">
                             <i class="bi bi-file-earmark-text"></i> <!-- Icono de consentimiento informado -->
                         </span>
                         <span class="title">Consentimiento Informado</span>
                     </a>
                 </li>
+
+                <!-- Respaldo: Visible solo para administrador -->
+                
+                    <li>
+                        <a href="{{ url('/admin/backup') }}">
+                            <span class="icon">
+                                <i class="bi bi-hdd"></i> <!-- Icono de respaldo -->
+                            </span>
+                            <span class="title">Respaldo</span>
+                        </a>
+                    </li>
+              
+
+                <!-- Ayuda: Visible para ambos roles -->
                 <li>
-                    <a href="{{ url('/admin/backup') }}">
+                    <a href="{{ route('admin.ayuda.index') }}">
                         <span class="icon">
-                            <i class="bi bi-hdd"></i> <!-- Icono de respaldo -->
+                            <i class="bi bi-question-circle"></i> <!-- Icono de ayuda -->
                         </span>
-                        <span class="title">Respaldo</span>
+                        <span class="title">Ayuda</span>
                     </a>
                 </li>
             </ul>
         </div>
+
+
 
         <!-- ========================= Main ==================== -->
         <div class="main">

@@ -11,7 +11,6 @@ class CreateTratamientosTable extends Migration
         Schema::create('tratamientos', function (Blueprint $table) {
             $table->id(); // auto-incremental por defecto
             $table->string('nombre', 100)->nullable();
-            $table->string('color', 7)->nullable();
             $table->timestamps();
         });
     }

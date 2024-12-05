@@ -38,9 +38,11 @@
                 <label for="name">Nombre Completo</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Ingresa tu nombre completo" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Ingresa tu nombre completo" required 
+                        pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo debe contener letras y espacios.">
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="email">Correo Electrónico</label>
                 <div class="input-group">

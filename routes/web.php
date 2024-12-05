@@ -2,15 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ConsentimientoController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\EspecialidadesController;
-use App\Http\Controllers\EspecialidadesReportController;
 use App\Http\Controllers\OdontogramaController;
-use App\Http\Controllers\ToothSurfaceController;
 use App\Http\Controllers\UserController; // Importamos el controlador UserController
 use App\Http\Controllers\UserReportController;
 use App\Models\Patient;
@@ -69,21 +67,41 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
 
 
     // Rutas para Paciente
-    Route::prefix('admin/patient')->name('admin.patient.')->group(function () {
-        Route::get('/', [AdminController::class, 'indexPaciente'])->name('index'); // Cambio aquí
-        Route::get('/create', [AdminController::class, 'createPaciente'])->name('create');
-        Route::post('/store', [AdminController::class, 'storePaciente'])->name('store');
-        Route::delete('/{id}', [AdminController::class, 'destroyPaciente'])->name('destroy');
-        Route::get('/{id}', [PatientController::class, 'show'])->name('show');
-         // Ruta para la búsqueda en tiempo real por AJAX
-        Route::get('/search', [AdminController::class, 'searchPaciente'])->name('patient.search');
-        Route::get('/pdf', [AdminController::class, 'generarPDFPacientes'])->name('pdf'); // Nueva ruta para generar PDF
+Route::prefix('admin/patient')->name('admin.patient.')->group(function () {
+    Route::get('/', [AdminController::class, 'indexPaciente'])->name('index'); // Listar pacientes
+    Route::get('/create', [AdminController::class, 'createPaciente'])->name('create');
+    Route::post('/store', [AdminController::class, 'storePaciente'])->name('store');
+    Route::delete('/{id}', [AdminController::class, 'destroyPaciente'])->name('destroy');
+    Route::get('/{id}', [PatientController::class, 'show'])->name('show');
 
-    });
+    // Ruta para la búsqueda en tiempo real por AJAX
+    Route::get('/search', [AdminController::class, 'searchPaciente'])->name('patient.search');
 
+    // Ruta para generar el PDF del paciente
+    Route::get('/{id}/pdf', [AdminController::class, 'generatePdf'])->name('pdf');
+    // Ruta para generar el PDF del paciente
+    Route::get('/{id}/report', [PatientController::class, 'report'])->name('report');
+
+
+    // Ruta para mostrar el odontograma del paciente
+    Route::get('/odontograma/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+
+    // Rutas para consultas
+    Route::get('/consulta-create/{id}', [AdminController::class, 'consultaCreate'])->name('consulta-create');
+    Route::post('/consulta-store/{id}', [AdminController::class, 'consultaStore'])->name('consulta-store');
+});
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'calendarData'])->name('dashboard.index');
     Route::get('/admin/patients/search', [PatientController::class, 'search'])->name('admin.patient.search');
     Route::get('/dashboard/counts', [DashboardController::class, 'getCounts']);
     Route::post('/guardar-odontograma', [OdontogramaController::class, 'guardar']); 
+    Route::get('/dashboard/recent-patients', [DashboardController::class, 'getRecentPatients']);
+    Route::get('/dashboard/frequent-treatments', [DashboardController::class, 'getFrequentTreatments']);
+    
+
+
+
     
 
     // Ruta para mostrar el formulario de edición
@@ -103,33 +121,55 @@ Route::middleware(['auth', 'role:Administrador'])->group(function () {
         Route::get('/{id}/edit', [AdminController::class, 'editDoctor'])->name('edit');    // Formulario para editar un médico
         Route::put('/{id}', [AdminController::class, 'updateDoctor'])->name('update');     // Actualizar un médico
         Route::delete('/{id}', [AdminController::class, 'destroyDoctor'])->name('destroy'); // Eliminar un médico
+        // Ruta para la impresión de médicos
+    Route::get('/print', [AdminController::class, 'printDoctors'])->name('print');
+    
     });
 
-// Grupo de rutas para el módulo de Odontograma
-Route::prefix('admin')->group(function () {
-    Route::get('/odontograma', [OdontogramaController::class, 'index'])->name('admin.odontograma.index');
-    Route::get('/odontograma/create', [OdontogramaController::class, 'create'])->name('admin.odontograma.create'); // Ruta para mostrar el formulario de creación
-    Route::post('/odontograma', [OdontogramaController::class, 'store'])->name('admin.odontograma.store');
-    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
-    Route::get('/odontograma', [OdontogramaController::class, 'index'])->name('admin.odontograma.index');
-    Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
-    Route::get('/admin/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
-    Route::delete('odontograma/{id}', [OdontogramaController::class, 'destroy'])->name('odontograma.destroy');
-    Route::get('/odontograma/imprimir', [OdontogramaController::class, 'imprimir'])->name('odontograma.imprimir');
-    
+    // Grupo de rutas para el módulo de Odontograma
+    Route::prefix('admin')->group(function () {
+        
+        Route::get('/odontograma', [OdontogramaController::class, 'index'])->name('admin.odontograma.index');
+        Route::get('/odontograma/create', [OdontogramaController::class, 'create'])->name('admin.odontograma.create'); // Ruta para mostrar el formulario de creación
+        Route::post('/odontograma', [OdontogramaController::class, 'store'])->name('admin.odontograma.store');
+        Route::get('/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show');
+        /* Route::get('/admin/odontogramas/{id}', [OdontogramaController::class, 'show'])->name('odontograma.show'); */
+        Route::delete('odontograma/{id}', [OdontogramaController::class, 'destroy'])->name('odontograma.destroy');
+        Route::get('/odontograma/imprimir', [OdontogramaController::class, 'imprimir'])->name('odontograma.imprimir');
+        /* Route::get('/buscar-pacientes', [OdontogramaController::class, 'buscarPacientes'])->name('buscar.pacientes'); */
+        Route::get('/odontograma/search', [OdontogramaController::class, 'search'])->name('odontograma.search');
+        
 
+
+    });
+    Route::get('/buscar-pacientes', [OdontogramaController::class, 'buscarPacientes'])->name('buscar.pacientes');
+
+
+
+
+    // Rutas para Consentimiento Informado
+    Route::prefix('admin/consentimientos')->name('admin.consentimientos.')->group(function () {
+        Route::get('/', [ConsentimientoController::class, 'index'])->name('index'); // Listado de consentimientos
+        Route::get('/crear', [ConsentimientoController::class, 'create'])->name('create'); // Muestra el formulario de creación
+        Route::post('/', [ConsentimientoController::class, 'store'])->name('store'); // Almacena el consentimiento informado
+        Route::delete('/{id}', [ConsentimientoController::class, 'destroy'])->name('destroy'); // Elimina el consentimiento
+        Route::get('/pdf/{id}', [ConsentimientoController::class, 'generatePDF'])->name('pdf'); // Genera el PDF del consentimiento
+        Route::get('/reporte', [ConsentimientoController::class, 'reporteConsentimientos'])->name('reporte'); // Genera el reporte de consentimientos
+    });
+
+    // Módulo de Ayuda
+    Route::prefix('admin/ayuda')->name('admin.ayuda.')->group(function () {
+        Route::get('/', [AyudaController::class, 'index'])->name('index'); // Vista de índice
+        Route::get('/descargar-pdf/{tipo}', [AyudaController::class, 'descargarPdf'])->name('descargar.pdf'); // Ruta para descargar PDF
+        Route::get('/desarrolladores', [AyudaController::class, 'desarrolladores'])->name('desarrolladores'); // Vista de desarrolladores
+    });
+
+
+    // Módulo de Respaldo
+    Route::prefix('admin/backup')->name('admin.backup.')->group(function () {
+        Route::get('/', [BackupController::class, 'index'])->name('index'); // Vista de índice
+        Route::get('/generar-respaldo', [BackupController::class, 'generarRespaldo'])->name('generar'); // Ruta para generar respaldo
+    });
 });
 
 
-// Rutas para Consentimiento Informado
-Route::prefix('admin/consentimientos')->name('admin.consentimientos.')->group(function () {
-    Route::get('/', [ConsentimientoController::class, 'index'])->name('index'); // Listado de consentimientos
-    Route::get('/crear', [ConsentimientoController::class, 'create'])->name('create'); // Muestra el formulario de creación
-    Route::post('/', [ConsentimientoController::class, 'store'])->name('store'); // Almacena el consentimiento informado
-    Route::delete('/{id}', [ConsentimientoController::class, 'destroy'])->name('destroy'); // Elimina el consentimiento
-    Route::get('/pdf/{id}', [ConsentimientoController::class, 'generatePDF'])->name('pdf'); // Genera el PDF del consentimiento
-    Route::get('/reporte', [ConsentimientoController::class, 'reporteConsentimientos'])->name('reporte'); // Genera el reporte de consentimientos
-});
-
-Route::get('/admin/backup', [BackupController::class, 'createBackup'])->name('admin.backup');
-});

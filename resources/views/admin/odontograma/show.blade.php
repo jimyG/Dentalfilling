@@ -2,112 +2,22 @@
 
 @section('content')
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Otros enlaces de CSS/JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   <style>
         h1 {
             text-align: center;
-            margin: 0 auto;
+            margin: 0 auto 20px;
+        }
+
+        .creation-date {
+            text-align: center;
+            font-weight: bold;
             margin-bottom: 20px;
         }
 
-        #titulo-odontograma {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 32px; /* Ajusta el tamaño de fuente según sea necesario */
-
-    }
-        #odontograma {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columnas de cuadrantes */
-            grid-template-rows: repeat(2, 1fr); /* 2 filas de cuadrantes */
-            gap: 30px; /* Espacio entre cuadrantes */
-        }
-
-        .cuadrante {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #fafafa;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr); /* 8 dientes en fila por cuadrante */
-            gap: 10px; /* Espacio entre dientes */
-        }
-
-        .diente {
-            width: 50px; /* Tamaño ajustado de los dientes */
-            height: 60px;
-            border: 2px solid #333;
-            border-radius: 50%;
-            display: grid;
-            grid-template-rows: 1fr 1fr 1fr;
-            grid-template-columns: 1fr 1fr 1fr;
-            position: relative;
-            background-color: #fafafa;
-            transition: transform 0.3s ease;
-        }
-
-        .diente:hover {
-            transform: scale(1.1);
-        }
-
-        .area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            text-align: center;
-            font-size: 10px;
-            background-color: #f0f0f0;
-            transition: background-color 0.3s ease;
-        }
-
-        .area[data-area="superior"] {
-            grid-column: 1 / span 3;
-            grid-row: 1;
-            border-top-left-radius: 20%;
-            border-top-right-radius: 20%;
-        }
-
-        .area[data-area="izquierda"] {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        .area[data-area="centro"] {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .area[data-area="derecha"] {
-            grid-column: 3;
-            grid-row: 2;
-        }
-
-        .area[data-area="inferior"] {
-            grid-column: 1 / span 3;
-            grid-row: 3;
-            border-bottom-left-radius: 40%;
-            border-bottom-right-radius: 40%;
-        }
-
-        .numero-diente {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #0c9ecf;
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
     </style>
 </head>
 
@@ -115,74 +25,175 @@
     <div class="table-title">
         <h1>Odontograma</h1>
     </div>
-    
+
     <div class="header-form d-flex justify-content-between mb-3">
-            <a href="{{ route('admin.odontograma.index') }}" id="icon-link" class="me-3">
-                <div id="custom-icon-container">
-                    <i class="bi bi-house-fill"></i>
-                </div>
-            </a>
-        <a href="" class="btn btn-secondary">
-            <i class="bi bi-printer"></i> Imprimir
+        <a href="{{ route('admin.odontograma.index') }}" id="icon-link" class="me-3">
+            <div id="custom-icon-container">
+                <i class="bi bi-house-fill"></i>
+            </div>
         </a>
+       
     </div>
 
     <h1 id="titulo-odontograma">Odontograma de {{ $paciente->nombres}}</h1>
+    <div class="creation-date">
+        Fecha de creación: {{ $odontograma->created_at->format('d/m/Y') }}
+    </div>
 
-    <div id="odontograma">
-        <div class="cuadrante">
-            @for($i = 1; $i <= 8; $i++)
-                <div class="diente" data-diente="{{ $i }}">
-                    <div class="numero-diente">{{ $i }}</div>
-                    <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">U</div>
-                    <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">I</div>
-                    <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">C</div>
-                    <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
-                    <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
-                </div>
+
+    <!-- Odontograma -->
+    <div class="odontograma">
+        <div class="cuadrante" id="cuadrante1">
+        <h3>Cuadrante I</h3>
+        <div class="dientes">
+            @for ($i = 1; $i <= 5; $i++)
+            <div class="diente" data-diente="{{ $i }}">
+
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">D</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">O</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">M</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
             @endfor
-        </div>
+            @for ($i = 6; $i <= 8; $i++)
+            <div class="diente" data-diente="{{ $i }}">
 
-        <div class="cuadrante">
-            @for($i = 9; $i <= 16; $i++)
-                <div class="diente" data-diente="{{ $i }}">
-                    <div class="numero-diente">{{ $i }}</div>
-                    <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">U</div>
-                    <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">I</div>
-                    <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">C</div>
-                    <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
-                    <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
-                </div>
-            @endfor
-        </div>
-
-        <div class="cuadrante">
-            @for($i = 17; $i <= 24; $i++)
-                <div class="diente" data-diente="{{ $i }}">
-                    <div class="numero-diente">{{ $i }}</div>
-                    <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">U</div>
-                    <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">I</div>
-                    <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">C</div>
-                    <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
-                    <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
-                </div>
-            @endfor
-        </div>
-
-        <div class="cuadrante">
-            @for($i = 25; $i <= 32; $i++)
-                <div class="diente" data-diente="{{ $i }}">
-                    <div class="numero-diente">{{ $i }}</div>
-                    <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">U</div>
-                    <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">I</div>
-                    <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">C</div>
-                    <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
-                    <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
-                </div>
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">D</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">I</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">M</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
             @endfor
         </div>
     </div>
+    <div class="cuadrante" id="cuadrante2">
+        <h3>Cuadrante II</h3>
+        <div class="dientes">
+            @for ($i = 9; $i <= 11; $i++)
+            <div class="diente" data-diente="{{ $i }}">
+
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">M</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">I</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
+            @endfor
+
+            @for ($i = 12; $i <= 16; $i++)
+            <div class="diente" data-diente="{{ $i }}">
+
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">M</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">O</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
+            @endfor
+        </div>
+    </div>
+
+
+    <div class="cuadrante" id="cuadrante3">
+        <h3>Cuadrante IV</h3>
+        <div class="dientes">
+            @for ($i = 25; $i <= 29; $i++)
+            <div class="diente" data-diente="{{ $i }}">
+
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">D</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">O</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">M</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
+            @endfor
+
+            @for ($i = 30; $i <= 32; $i++)
+            <div class="diente" data-diente="{{ $i }}">
+
+                <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+                <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">D</div>
+                <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">I</div>
+                <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">M</div>
+                <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+            </div>
+            @endfor
+        </div>
+    </div>
+
+
+<div class="cuadrante" id="cuadrante4">
+    <h3>Cuadrante III</h3>
+    <div class="dientes">
+        @for ($i = 17; $i <= 19; $i++)
+        <div class="diente" data-diente="{{ $i }}">
+
+            <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+            <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">M</div>
+            <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">I</div>
+            <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
+            <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+        </div>
+    @endfor
+
+    @for ($i = 20; $i <= 24; $i++)
+    <div class="diente" data-diente="{{ $i }}">
+
+        <div class="area" data-area="superior" style="background-color: {{ getTreatmentColor($i, 'superior', $tratamientos) }}">V</div>
+        <div class="area" data-area="izquierda" style="background-color: {{ getTreatmentColor($i, 'izquierda', $tratamientos) }}">M</div>
+        <div class="area" data-area="centro" style="background-color: {{ getTreatmentColor($i, 'centro', $tratamientos) }}">O</div>
+        <div class="area" data-area="derecha" style="background-color: {{ getTreatmentColor($i, 'derecha', $tratamientos) }}">D</div>
+        <div class="area" data-area="inferior" style="background-color: {{ getTreatmentColor($i, 'inferior', $tratamientos) }}">L</div>
+    </div>
+    @endfor
+    </div>
 </div>
+
+</div>
+<br><br>
+
+<h4 class="text-center">Historial de consultas</h4>
+                <div class="row">
+                    @if ($paciente->consultas->isNotEmpty()) <!-- Verificar si tiene consultas -->
+                        <div class="col-md-12">
+                            @foreach ($paciente->consultas as $consulta) <!-- Iterar sobre las consultas -->
+                                <div class="consulta-card mb-4 p-3 border rounded">
+                                    <h5>
+                                        Consulta: {{ $consulta->created_at->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
+                                        - <strong>Hora:</strong> {{ $consulta->created_at->locale('es')->isoFormat('hh:mm A') }}
+                                    </h5>
+
+                                    <div class="row">
+                                        <!-- Columna 1: Motivo, Diagnóstico y Tratamiento Propuesto -->
+                                        <div class="col-md-6">
+                                            <p><i class="bi bi-pen color-icon-consulta"></i> <strong>Motivo de la Consulta:</strong> {{ $consulta->motivo_consulta ?? 'No registrado' }}.</p>
+                                            <p><i class="bi bi-clipboard-heart color-icon-consulta"></i> <strong>Diagnóstico:</strong> {{ $consulta->diagnostico ?? 'No registrado' }}.</p>
+                                            <p><i class="bi bi-tooth color-icon-consulta"></i> <strong>Tratamiento Dental Aplicado:</strong> {{ $consulta->tratamientosDentales->nombre ?? 'No registrado' }}.</p>
+                                            <p><i class="bi bi-capsule color-icon-consulta"></i> <strong>Tratamiento Propuesto:</strong> {{ $consulta->tratamiento_propuesto ?? 'No registrado' }}.</p>
+                                        </div>
+
+                                        <!-- Columna 2: Observaciones, Presión Arterial, Pulso, Temperatura -->
+                                        <div class="col-md-6">
+                                            <p><i class="bi bi-file-earmark-text color-icon-consulta"></i> <strong>Observaciones:</strong> {{ $consulta->observaciones ?? 'No registrado' }}.</p>
+                                            <p><i class="bi bi-heart color-icon-consulta"></i> <strong>Presión Arterial:</strong> {{ $consulta->presion_arterial ?? 'No registrada' }}.</p>
+                                            <p><i class="bi bi-heart-pulse color-icon-consulta"></i> <strong>Pulso:</strong> {{ $consulta->pulso ?? 'No registrado' }}.</p>
+                                            <p><i class="bi bi-thermometer color-icon-consulta"></i> <strong>Temperatura:</strong> {{ $consulta->temperatura ?? 'No registrada' }}.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="col-md-12">
+                            <p>No se ha registrado historial clínico para este paciente.</p>
+                        </div>
+                    @endif
+                </div>
+
+
+
 
 @php
 function getTreatmentColor($diente, $area, $tratamientos) {

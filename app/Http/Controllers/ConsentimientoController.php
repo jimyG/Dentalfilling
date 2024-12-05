@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Medico;
 use App\Models\Patient;
 use App\Models\ConsentimientoInformado;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -57,16 +59,19 @@ class ConsentimientoController extends Controller
     public function generatePDF($id)
     {
         $consentimiento = ConsentimientoInformado::with('medico', 'patient')->findOrFail($id);
-
-        // Obtener el nombre del paciente
+    
+        // Obtener el nombre completo y otros datos del paciente
         $patientName = $consentimiento->patient->nombres . ' ' . $consentimiento->patient->apellidos;
-
-        // Generar el PDF
-        $pdf = PDF::loadView('admin.consentimientos.pdf', compact('consentimiento'));
-
+        $patientEdad = $consentimiento->patient->edad; // Suponiendo que tienes un campo de edad
+        $patientDui = $consentimiento->patient->dui; // Suponiendo que tienes un campo de DUI
+    
+        // Generar el PDF con los datos completos
+        $pdf = PDF::loadView('admin.consentimientos.pdf', compact('consentimiento', 'patientName', 'patientEdad', 'patientDui'));
+    
         // Descargar el PDF con el nombre del paciente
         return $pdf->download('consentimiento_informado_' . $patientName . '.pdf');
     }
+    
 
     // Nueva función para generar el reporte completo de consentimientos
     public function reporteConsentimientos()
@@ -80,4 +85,27 @@ class ConsentimientoController extends Controller
         // Descargar el PDF como "reporte_consentimientos.pdf"
         return $pdf->download('reporte_consentimientos.pdf');
     }
+
+
+public function preview(Request $request)
+{
+    // Recibir datos de la solicitud
+    $medico = Medico::find($request->input('medico_id'));
+    $paciente = Patient::find($request->input('patient_id'));
+    $contenido = $request->input('contenido');
+
+    // Configuración de Dompdf para la generación del PDF
+    $options = new Options();
+    $options->set('isRemoteEnabled', true);
+    $dompdf = new Dompdf($options);
+
+    // Renderizar la vista `pdf.blade.php` con los datos
+    $html = view('admin.consentimientos.pdf', compact('medico', 'paciente', 'contenido'))->render();
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    // Devolver el PDF en línea para la previsualización en el `<iframe>`
+    return $dompdf->stream("Consentimiento_preview.pdf", ["Attachment" => false]);
+}
 }

@@ -1,6 +1,11 @@
 @extends('layouts.menu')
 
 @section('content')
+<!-- Overlay de carga, visible cuando showLoaderAndPrint está activo -->
+<div id="loader-overlay" class="loader-overlay" style="display: none;">
+    <div class="loader"></div>
+</div>
+
 <div class="container">
         <div class="table-title">
             <h1>Gestion de Usuarios</h1>
@@ -12,9 +17,13 @@
             </a>
 
             <!-- Botón Imprimir alineado a la derecha -->
-            <a href="{{ route('users.report') }}" class="btn btn-secondary">
+            <!-- Botón de impresión -->
+            <a href="{{ route('users.report') }}" class="btn btn-secondary" onclick="showLoaderAndPrint(event)">
                 <i class="bi bi-printer"></i> Imprimir
             </a>
+
+            
+
         </div>
 
     @if (session('success'))
@@ -42,23 +51,29 @@
         </script>
     @endif
 
-    <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);">
         <thead class="table-info">
             <tr>
-                <th class="text-center">ID</th>
+                <th class="text-center d-none d-md-table-cell">ID</th> <!-- Ocultar en pantallas pequeñas -->
                 <th class="text-center">Nombre</th>
-                <th class="text-center">Email</th>
-                <th class="text-center">Rol</th>
+                <th class="text-center d-none d-md-table-cell">Email</th> <!-- Ocultar en pantallas pequeñas -->
+                <th class="text-center d-none d-md-table-cell">Rol</th> <!-- Ocultar en pantallas pequeñas -->
                 <th class="text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>
+                    <td class="text-center d-none d-md-table-cell" data-label="ID">{{ $user->id }}</td> <!-- Ocultar en pantallas pequeñas -->
+                    <td class="text-center" data-label="Nombre">
+                        <i class="bi bi-person-fill me-2 icon-persona"></i> <!-- Icono de persona -->
+                        {{ $user->name }}
+                    </td>
+                    <td class="text-center d-none d-md-table-cell" data-label="Email">
+                        <i class="bi bi-envelope-fill me-2 icon-correo"></i> <!-- Icono de correo -->
+                        {{ $user->email }}
+                    </td> <!-- Ocultar en pantallas pequeñas -->
+                    <td class="text-center d-none d-md-table-cell" data-label="Rol">
                         @foreach ($user->roles as $role)
                             @if ($role->name == 'Administrador')
                                 <span class="role-admin">{{ $role->name }}</span>
@@ -69,7 +84,7 @@
                             @endif
                         @endforeach
                     </td>
-                    <td>
+                    <td class="text-center" data-label="Acciones">
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm me-2">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
@@ -86,6 +101,7 @@
             @endforeach
         </tbody>
     </table>
+
 
 </div>
 <!-- Incluir SweetAlert2 -->
@@ -120,6 +136,54 @@
             }
         });
     }
+</script>
+
+
+<script>
+    function showLoaderAndPrint(event) {
+    event.preventDefault(); // Evita la redirección instantánea
+
+    // Mostrar la animación de carga
+    const loaderOverlay = document.getElementById('loader-overlay');
+    loaderOverlay.style.display = 'flex';
+
+    // Realizar la solicitud AJAX para obtener el PDF
+    fetch(event.target.href, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/pdf',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al generar el PDF');
+        }
+        return response.blob(); // Obtener el archivo PDF como blob
+    })
+    .then(blob => {
+        // Crear un enlace para descargar el archivo PDF
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_usuarios.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove(); // Remover el enlace después de descargar
+
+        // Ocultar la animación de carga
+        loaderOverlay.style.display = 'none';
+
+        // Liberar el objeto URL creado
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        loaderOverlay.style.display = 'none'; // Ocultar la animación en caso de error
+        alert('Hubo un problema al generar el PDF.');
+    });
+}
+
 </script>
 
 @endsection

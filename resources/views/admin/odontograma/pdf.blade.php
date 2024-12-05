@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odontogramas</title>
+    <title>Pacientes con odontograma</title>
+    
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
+            text-align: center; /* Centra todo el contenido en el body */
+        }
+        img.logo {
+            max-width: 200px; /* Ajusta el tamaño del logo */
+            margin-bottom: 20px; /* Espaciado debajo del logo */
         }
         table {
             width: 100%;
@@ -28,12 +34,29 @@
     </style>
 </head>
 <body>
+<?php
+// Utiliza el cache si es necesario
+$logoPath = public_path('img/logo.png');
+
+if (file_exists($logoPath)) {
+    // Cargar la imagen y convertirla a Base64
+    $logo = base64_encode(file_get_contents($logoPath));
+    $logoSrc = 'data:image/png;base64,'.$logo;
+} else {
+    // Manejo de errores si la imagen no se encuentra
+    $logoSrc = ''; // O una imagen por defecto
+}
+?>
+<img src="{{ $logoSrc }}" class="logo" alt="Logo">
+
 <h1 style="text-align: center;">Lista de pacientes con Odontogramas</h1>
 
-<div class="header-info">
-    <p>Fecha: {{ date('d/m/Y') }}</p>
-    <p>Hora: {{ date('H:i') }}</p>
+<!-- Sección para mostrar la fecha y hora de generación del reporte -->
+<div class="report-info">
+    Fecha: {{ \Carbon\Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }} &nbsp; &nbsp;
+    Hora: {{ \Carbon\Carbon::now()->format('h:i:s A') }}
 </div>
+
 
 <table>
     <thead>

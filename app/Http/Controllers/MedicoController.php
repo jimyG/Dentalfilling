@@ -116,4 +116,17 @@ class MedicoController extends Controller
 
         return redirect()->route('admin.doctor.index')->with('success', 'Médico eliminado con éxito.');
     }
+
+    public function printDoctors()
+    {
+        // Obtener los datos de los médicos
+        $medicos = Medico::all();
+    
+        // Generar el PDF con la vista y los datos
+        $pdf = PDF::loadView('admin.doctor.report_medico', compact('medicos'))
+                  ->setPaper('a4', 'landscape'); // Establecer orientación horizontal (landscape)
+    
+        // Descargar el PDF
+        return $pdf->download('reporte_medicos.pdf');
+    }
 }

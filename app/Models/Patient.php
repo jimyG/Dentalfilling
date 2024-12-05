@@ -10,21 +10,21 @@ class Patient extends Model
     use HasFactory;
 
     protected $fillable = [
-            'expediente',
-            'fecha_ingreso',
-            'nombres',
-            'apellidos',
-            'fecha_nacimiento',
-            'genero',
-            'edad',
-            'estado_civil',
-            'telefono',
-            'celular',
-            'correo',
-            'whatsapp',
-            'emergencia_contacto',
-            'emergencia_telefono',
-            'ha_visitado_odontologo',
+        'expediente',
+        'fecha_ingreso',
+        'nombres',
+        'apellidos',
+        'fecha_nacimiento',
+        'genero',
+        'edad',
+        'estado_civil',
+        'telefono',
+        'celular',
+        'correo',
+        'whatsapp',
+        'emergencia_contacto',
+        'emergencia_telefono',
+        'ha_visitado_odontologo',
     ];
 
     public function evaluacionSistemica()
@@ -42,16 +42,31 @@ class Patient extends Model
         return $this->hasMany(ExamenesClinicos::class);
     }
 
-
-
     public function evaluacionRegional()
     {
         return $this->hasMany(EvaluacionRegional::class, 'patient_id');
     }
 
-    public function odontogramas()
-    {
-        return $this->hasMany(Odontograma::class, 'patient_id'); // Relación 1:N con odontograma
-    }
+    public function odontograma()
+{
+    return $this->hasOne(Odontograma::class, 'paciente_id');
+}
+
+public function enfermedadesComunes()
+{
+    return $this->hasOne(EnfermedadesComunes::class);
+}
+
+
+    public function consultas()
+{
+    return $this->hasMany(Consulta::class);
+}
+
+public function tratamientosDentales()
+{
+    return $this->hasMany(TratamientoDental::class);
+}
+
 
 }

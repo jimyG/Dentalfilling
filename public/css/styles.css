@@ -1,3 +1,56 @@
+
+/* =============== Globals ============== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #e9e5fa;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", serif;
+  font-weight: 900;
+  font-style: italic;
+}
+Read our FAQ
+
+
+/* Importa la fuente Poppins con varios pesos */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Clase para aplicar Poppins semi-bold */
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 1.25rem; /* Ajusta el tamaño si es necesario */
+  line-height: 1.5; /* Espaciado entre líneas */
+  color: #3D155F; /* Mantén un morado elegante */
+  margin-bottom: 1rem;
+}
+
+/* Responsivo para tamaños de pantalla más pequeños */
+@media (max-width: 600px) {
+  .poppins-semibold {
+    font-size: 1rem;
+  }
+}
+
+
 .search-container {
   display: flex;
   align-items: center;
@@ -52,7 +105,7 @@
 }
 
 #banner {
-  background: linear-gradient(to right, #514ca7, #8d98c6);  /* Fondo degradado de izquierda a derecha */
+  background: #514ca7;  /* Fondo degradado de izquierda a derecha */
   padding: 10px;              /* Espacio interno */
   border-radius: 10px;        /* Borde redondeado */
   text-align: center;         /* Centrar el texto */
@@ -88,13 +141,37 @@
 }
 
 
+
+.patient-chart {
+  
+  width: 100%; /* Mantiene el contenedor al 100% de su columna */
+  max-width: 800px; /* Define un ancho máximo para el gráfico */
+  margin-bottom: 50px;
+  
+}
+
+/* Estilos para el contenedor y canvas del gráfico de tratamientos */
+.treatment-chart {
+  position: relative;
+  width: 100%; /* Mantiene el contenedor al 100% de su columna */
+  max-width: 400px; /* Define un ancho máximo para el gráfico */
+  margin: 0 auto; /* Centra el gráfico en su contenedor */
+  margin-bottom: 50px;
+}
+
+.treatment-chart canvas {
+  width: 80% !important; /* Asegura que el canvas tome el 100% de su contenedor */
+  height: auto !important; /* Mantiene la relación de aspecto */
+}
+
+
 .container-dashboard {
   background: #ffffff; /* Color de fondo blanco */
   border-radius: 15px; /* Bordes redondeados */
   box-shadow: 0 4px 10px rgba(123, 72, 241, 0.2); /* Sombra sutil */
   padding: 20px; /* Espacio interno */
-  margin: 50px auto; /* Margen superior e inferior */
-  height: 600px; /* Altura automática, puede ser ajustada dinámicamente */
+  margin: 50px auto; /* Margen superior e inferior */ 
+  height: auto; /* Ajuste dinámico de altura */
   max-width: 1200px; /* Ancho máximo para mantener la estética */
 }
 
@@ -116,16 +193,7 @@
     align-items: center; /* Centra verticalmente el contenido */
 }
 
-.details {
-  display: none; /* Ocultar por defecto */
-  opacity: 0;    /* Hacer invisible por defecto */
-  transition: opacity 0.3s ease; /* Efecto de transición para la opacidad */
-}
 
-.details.show {
-  display: block; /* Mostrar cuando está activo */
-  opacity: 1;     /* Hacer visible */
-}
 
 .counter-card.expanded {
   height: 200px; /* Ajusta según la altura del contenido que quieras mostrar */
@@ -153,15 +221,15 @@
 
 /* Fondo único y suave para cada contador */
 #doctorCounter {
-  background-color: rgba(198, 93, 114, 0.1); /* Fondo suave cereza (doctores) */
+  background-color: rgba(204, 112, 131, 0.138); /* Fondo suave cereza (doctores) */
 }
 
 #patientCounter {
-  background-color: rgba(35, 136, 245, 0.1); /* Fondo suave azul (pacientes) */
+  background-color: rgba(12, 122, 240, 0.138); /* Fondo suave azul (pacientes) */
 }
 
 #specialtyCounter {
-  background-color: rgba(128, 0, 128, 0.1); /* Fondo suave morado (especialidades) */
+  background-color: rgba(144, 1, 144, 0.104); /* Fondo suave morado (especialidades) */
 }
 
 /* Fondo único para cada icono */
@@ -247,6 +315,8 @@
   border-color: #0056b3; /* Color del borde al hacer foco */
 }
 
+
+
 .search-container .btn {
   border-radius: 25px; /* Bordes redondeados */
   margin-left: -40px; /* Superponer el botón al input */
@@ -266,29 +336,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
 
-/* =============== Globals ============== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  
-}
-
-:root {
-  --blue: #2a2185;
-  --white: #fff;
-  --gray: #f5f5f5;
-  --black1: #222;
-  --black2: #999;
-}
-
-body {
-  min-height: 100vh;
-  overflow-x: hidden;
-  
-}
-
-
 
 .container {
   position: relative;
@@ -298,16 +345,18 @@ body {
   border-radius: 15px; /* Bordes redondeados */
   box-shadow: 0 4px 6px rgba(159, 142, 241, 0.3); /* Sombra del input */
   padding: 20px; /* Espacio interno */
-  margin: 20px auto; /* Margen superior e inferior */
+  margin: auto; /* Margen superior e inferior */
 }
 
-/* Hacer que el texto y los botones sean responsivos */
 
+
+
+
+/* Hacer que el texto y los botones sean responsivos */
 
 .form-group {
   margin-bottom: 15px; /* Espacio entre los grupos de formularios */
 }
-
 
 
 /* Responsivo para pantallas más pequeñas */
@@ -338,12 +387,22 @@ body {
   position: fixed;
   width: 300px;
   height: 100%;
-  background:#7b6bc8; 
-  border-left: 10px solid ;
+  background: #7b6bc8;
+  border-left: 10px solid;
   transition: 0.5s;
-  overflow: hidden;
-  z-index: 1000; /* Asegura que esté sobre otros elementos */
+  overflow-y: auto; /* Habilita desplazamiento vertical */
+  -webkit-overflow-scrolling: touch; /* Desplazamiento suave en dispositivos táctiles */
+  z-index: 1000;
+  font-family: 'Helvetica Neue', Helvetica, Arial;
 }
+
+/* Personalizar el scrollbar (Chrome, Safari, Edge) */
+.navigation::-webkit-scrollbar {
+  width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+
+
 .navigation.active {
   width: 80px;
 }
@@ -365,12 +424,13 @@ body {
 
 .navigation ul li:hover,
 .navigation ul li.hovered {
-  background-color: var(--white);
+  background-color: #e9e5fa;
 }
 
 .navigation ul li:nth-child(1) {
   margin-bottom: 40px;
   pointer-events: none;
+  
 }
 
 .navigation ul li a {
@@ -414,20 +474,21 @@ body {
   content: "";
   position: absolute;
   right: 0;
-  top: -50px;
+  top: -47px;
   width: 50px;
   height: 50px;
   background-color: transparent;
   border-radius: 50%;
   box-shadow: 35px 35px 0 10px var(--white);
   pointer-events: none;
+  
 }
 .navigation ul li:hover a::after,
 .navigation ul li.hovered a::after {
   content: "";
   position: absolute;
   right: 0;
-  bottom: -50px;
+  bottom: -47px;
   width: 50px;
   height: 50px;
   background-color: transparent;
@@ -441,11 +502,12 @@ body {
   position: absolute;
   width: calc(100% - 300px);
   left: 300px;
-  min-height: 90vh;
-  background-color: #edeaf9;
+  min-height: 100vh;
+  background-color: #e9e5fa;
 
   border-top-left-radius: 30px; /* Borde redondeado en la esquina superior izquierda */
   border-bottom-left-radius: 30px; /* Borde redondeado en la esquina inferior izquierda */
+  transition: 0.5s;
 }
 .main.active {
   width: calc(100% - 80px);
@@ -486,6 +548,7 @@ body {
   .main {
     width: 100%;
     left: 0;
+    padding: 12px;
   }
   .main.active {
     left: 300px;
@@ -495,17 +558,7 @@ body {
   }
 }
 
-@media (max-width: 768px) {
-  .details {
-    grid-template-columns: 1fr;
-  }
-  .recentOrders {
-    overflow-x: auto;
-  }
-  .status.inProgress {
-    white-space: nowrap;
-  }
-}
+
 
 @media (max-width: 480px) {
   .cardBox {
@@ -557,15 +610,10 @@ body {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
 body, form, label {
-    font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el body, los formularios y las etiquetas */
+    font-family: 'Poppins', sans-serif, ; /* Aplica la fuente Poppins a todo el body, los formularios y las etiquetas */
 }
 
-label {
-    font-size: 1.1rem; /* Ajusta el tamaño de las etiquetas */
-    font-weight: 500; /* Estilo seminegrita para destacar las etiquetas */
-    color: #333; /* Color oscuro para las etiquetas */
-    margin-bottom: 8px; /* Espacio bajo las etiquetas */
-}
+
 
 input, textarea {
     font-size: 1rem; /* Tamaño estándar de fuente para los campos de entrada */
@@ -611,12 +659,26 @@ button:hover {
 .form-container {
   max-width: 1050px; /* Ancho máximo del formulario */
   margin: 20px 0 20px 50px; /* Margen superior e inferior de 20px, y margen izquierdo de 50px */
-  background: #f8f8f8; /* Fondo azul */
+  background: #f8f8f8; /* blanco */
   padding: 20px; /* Espacio interno */
   border-radius: 10px; /* Esquinas redondeadas */
   border: 2px solid #e4e4e4; /* Borde azul más oscuro */
-  box-shadow: 0px 4px 8px rgba(97, 78, 243, 0.1); /* Sombra sutil para darle profundidad */
+  box-shadow: 0px 4px 8px rgba(124, 17, 254, 0.422); /* Sombra sutil para darle profundidad */
+  margin: auto;
+  
 }
+
+.input-group-text {
+  font-size: 1.0rem; /* Aumenta el tamaño del ícono, ajusta según sea necesario */
+  background-color: #4fd0bf; /* Color de fondo igual al color del ícono */
+  border: none; /* Elimina el borde */
+}
+
+.input-group-text i {
+  color: white; /* Color del ícono en blanco */
+}
+
+
 
 /* Estilo para todas las tablas */
 .role-admin {
@@ -643,7 +705,7 @@ table {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 20px;
-  font-family:"Poppins", sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial
 }
 
 /* Estilo para el encabezado de la tabla */
@@ -716,10 +778,12 @@ table thead th {
 
 /* Estilo para las celdas del cuerpo de la tabla */
 table tbody td {
-  text-align: center;
+  text-align: left;
   padding: 10px 15px;
   color: #34495e; /* Color del texto para un look limpio */
   font-size: 14px;
+  font-family: 'Helvetica Neue', Helvetica, Arial;
+  
 }
 
 /* Alternar colores en las filas para mejorar la legibilidad */
@@ -835,6 +899,8 @@ button:hover {
   background-color: #45a049;
 }
 
+
+
 .odontograma {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 cuadrantes por fila */
@@ -851,26 +917,34 @@ button:hover {
 
 .dientes {
   display: grid;
-  grid-template-columns: repeat(8, 1fr); /* 4 dientes por fila */
+  grid-template-columns: repeat(auto-fit, minmax(-20px, 1fr)); /* Adaptable a dispositivos */
   gap: 5px;
 }
 
+/* Mantener siempre 4 dientes por fila en pantallas grandes */
+@media (min-width: 600px) {
+  .dientes {
+    grid-template-columns: repeat(8, 1fr); /* 4 dientes por fila */
+  }
+}
+
+
 .diente {
-  width: 60px; /* tamaño ajustado */
-  height: 70px; /* tamaño ajustado */
-  border: 2px solid #333;
-  border-radius: 50%;
+  width: 100%; /* Ajuste automático al contenedor */
+  height: auto; /* Mantener la relación de aspecto */
+  border-radius: 50%; /* Mantener la forma circular */
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   position: relative;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  background-color: #fafafa;
+  background-color: #fafafa; /* Fondo original */
   transition: transform 0.3s ease;
 }
 
 .diente:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
+  box-shadow: 0 4px 20px rgba(136, 137, 137, 0.7); /* Sombra negra */
 }
 
 .area {
@@ -881,15 +955,15 @@ button:hover {
   cursor: pointer;
   text-align: center;
   font-size: 12px;
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Fondo original */
   transition: background-color 0.3s ease;
 }
 
 .area[data-area="superior"] {
   grid-column: 1 / span 3;
   grid-row: 1;
-  border-top-left-radius: 20%;
-  border-top-right-radius: 20%;
+  border-top-left-radius: 90%;
+  border-top-right-radius: 90%;
 }
 
 .area[data-area="izquierda"] {
@@ -910,12 +984,12 @@ button:hover {
 .area[data-area="inferior"] {
   grid-column: 1 / span 3;
   grid-row: 3;
-  border-bottom-left-radius: 40%;
-  border-bottom-right-radius: 40%;
+  border-bottom-left-radius: 90%;
+  border-bottom-right-radius: 90%;
 }
 
 .area:hover {
-  background-color: #e0e0e0;
+  background-color: #c0bdbd; /* Efecto de hover */
 }
 
 .numero-diente {
@@ -925,16 +999,38 @@ button:hover {
   transform: translateX(-50%);
   background-color: #0c9ecf;
   color: white;
-  width: 25px; /* Ancho fijo */
-  height: 25px; /* Altura fija */
-  border-radius: 50%; /* Hace que sea un círculo */
-  display: flex; /* Para centrar el contenido */
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 12px;
   font-weight: bold;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  margin-bottom: 5px; /* Opcional: espacio adicional debajo del número */
+  margin-bottom: 5px;
+}
+
+.area-diferente {
+  background-color: #a0f2ea; /* Color original para áreas específicas */
+  border-color: #fffefe;
+}
+
+/* Media queries para adaptar a dispositivos pequeños */
+@media (max-width: 768px) {
+  .odontograma {
+    grid-template-columns: repeat(2, 2fr); /* Un solo cuadrante por fila en pantallas pequeñas */
+  }
+  .diente {
+    width: 80px; /* Tamaño más pequeño para dispositivos móviles */
+    height: 90px;
+  }
+  .numero-diente {
+    top: -20px;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+  }
 }
 
 
@@ -950,9 +1046,9 @@ button:hover {
 }
 
 #custom-icon-container {
-  width: 40px; /* Ancho del fondo cuadrado */
-  height: 40px; /* Alto del fondo cuadrado */
-  background-color: #4fd0bf; /* Color de fondo más claro (cereza claro) */
+  width: 45px; /* Ancho del fondo cuadrado */
+  height: 45px; /* Alto del fondo cuadrado */
+  background-color: #4fd0bf; /* Color de fondo más claro (aqua) */
   display: flex;
   justify-content: center; /* Centrar horizontalmente */
   align-items: center; /* Centrar verticalmente */
@@ -960,8 +1056,8 @@ button:hover {
 }
 
 #custom-icon-container i {
-  color: #ffffff; /* Color del ícono más oscuro (cereza oscuro) */
-  font-size: 20px; /* Tamaño del ícono */
+  color: #ffffff; /* Color del ícono más oscuro (aqua oscuro) */
+  font-size: 30px; /* Tamaño del ícono */
 }
 
 #title-container {
@@ -1005,3 +1101,277 @@ button:hover {
   font-size: 18px; /* Tamaño del ícono */
 }
 
+/* Estilos personalizados para las tarjetas */
+.card-pdf-usuario, .card-pdf-administrador, .card-videos, .card-desarrolladores {
+  background-color: #e3f2fd; /* Fondo suave */
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+  position: relative; /* Para posicionar el botón dentro de la tarjeta */
+  overflow: hidden; /* Para que el botón no salga de la tarjeta */
+}
+
+.card-pdf-usuario:hover, .card-pdf-administrador:hover, .card-videos:hover, .card-desarrolladores:hover {
+  background-color: #1976d2; /* Azul intenso al hacer hover */
+  transform: scale(1.06); /* Efecto de hover */
+}
+
+.icon-custom {
+  font-size: 3rem; /* Tamaño del icono */
+  color: #1976d2; /* Color del icono más fuerte */
+  margin-bottom: 10px;
+  transition: color 0.3s; /* Transición para el cambio de color */
+}
+
+
+.card-pdf-usuario:hover .icon-custom, .card-pdf-administrador:hover .icon-custom, 
+.card-videos:hover .icon-custom, .card-desarrolladores:hover .icon-custom {
+  color: white; /* Cambiar el color del icono a blanco al hacer hover */
+}
+
+.more-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas */
+  gap: 20px; /* Espacio entre tarjetas */
+}
+
+.button-hover {
+  display: none; /* Ocultar botón por defecto */
+  position: absolute; /* Posicionar el botón en la parte inferior de la tarjeta */
+  bottom: 20px; /* Espaciado desde el fondo */
+  left: 50%; /* Centrar el botón horizontalmente */
+  transform: translateX(-50%); /* Ajustar el centro del botón */
+  background-color: #fff; /* Color de fondo del botón */
+  color: #1976d2; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  padding: 10px 20px; /* Espaciado interno del botón */
+  transition: opacity 0.3s; /* Transición suave para la opacidad */
+  z-index: 10; /* Asegurarse de que el botón esté sobre otros elementos */
+}
+
+/* Mostrar el botón al hacer hover en la tarjeta */
+.card-custom:hover .button-hover {
+  display: block; /* Mostrar el botón */
+  opacity: 1; /* Asegurarse de que sea visible */
+}
+
+/* Ocultar el h5 al hacer hover en la tarjeta */
+.card-custom:hover h5 {
+  display: none; /* Ocultar el texto */
+}
+
+/* Asegurar que el botón conserve el color blanco al hacer hover */
+.card-custom:hover .button-hover {
+  background-color: #fff; /* Color de fondo blanco al hacer hover */
+}
+
+@media (max-width: 768px) {
+  .more-options {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 2 columnas en pantallas más pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .more-options {
+      grid-template-columns: 1fr; /* 1 columna en pantallas más pequeñas */
+  }
+}
+
+/* Estilos para el fondo superpuesto y centrado de la animación */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(20, 20, 20, 0.247); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Estilos de la animación */
+.loader {
+  width: 200px; /* Aumenta el ancho */
+  height: 40px; /* Aumenta la altura */
+  border-radius: 20px;
+  color: #6a3f8b;
+  border: 3px solid; /* Aumenta el grosor del borde */
+  position: relative;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 3px; /* Ajusta el margen para que se vea bien con el nuevo tamaño */
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: #6a3f8b;
+  animation: l6 2s infinite;
+}
+
+@keyframes l6 {
+  100% { inset: 0; }
+}
+
+/* Estilos para el fondo superpuesto y centrado de la animación */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(77, 75, 75, 0.21); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 175px;
+  height: 35px;
+  border-radius: 40px;
+  color: #7500fb;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  width: 25%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+    50% {left:100%;transform: translateX(calc(-100% - 4px))}
+}
+
+#paciente-lista {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: white;
+  z-index: 1000;
+}
+
+#paciente-lista .dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+#paciente-lista .dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+
+
+/* Estilos generales para el contenedor del icono */
+.icon-container-o {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Icono con fondo verde (odontograma disponible) */
+.icon-check-green {
+  background-color: #28a745; /* Verde para "tiene odontograma" */
+}
+
+/* Icono con fondo rojo (odontograma no disponible) */
+.icon-check-red {
+  background-color: #dc3545; /* Rojo para "no tiene odontograma" */
+}
+
+/* Estilos para el ícono */
+.icon-check {
+  font-weight: bold;
+}
+
+.icon-persona {
+  color: #9286a6; /* Morado pastel */
+}
+
+.icon-calendario {
+  color: #5bc6db; /* Aqua pastel */
+}
+
+.icon-telefono {
+  color: #f68286; /* Rosa pastel */
+}
+
+.icon-correo {
+  color: #7e50e0; /* Amarillo pastel */
+}
+
+.icon-especialidad {
+  color: #5bc6db; /* Aqua pastel */
+}
+
+.icon-edad {
+  color: #1f74ea; /* Azul pastel */
+}
+
+.icon-licencia {
+  color: #ff608d; /* Rosa pastel */
+}
+
+.icon-direccion {
+  color: #2ee060; /* Verde pastel */
+}
+
+.color-icon {
+  color: #07afd1; /* Amarillo pastel */
+}
+
+.color-icon-consulta {
+  color: #be2f5f; /* Cambia este color según tus necesidades */
+}
+
+
+
+/* Margen izquierdo en las celdas de contenido para mejor alineación */
+.td-content {
+  padding-left: 2 rem; /* Ajusta el valor según el espacio deseado */
+}
+
+.patient-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 16px; /* Espacio entre elementos */
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre icono y texto */
+}
+
+.info-item i {
+  font-size: 1.2rem;
+}
+
+/* Responsividad para pantallas grandes */
+@media (min-width: 992px) {
+  .patient-info {
+      grid-template-columns: repeat(3, 1fr); /* 3 columnas en pantalla grande */
+  }
+}

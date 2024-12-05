@@ -16,12 +16,17 @@ class Odontograma extends Model
     protected $fillable = ['paciente_id', 'diente', 'area', 'tratamiento_id'];
 
     public function patient()
-{
-    return $this->belongsTo(Patient::class, 'paciente_id'); // Asegúrate de que el nombre sea correcto
-}
+    {
+        return $this->belongsTo(Patient::class, 'paciente_id');
+    }
 
     public function tratamiento()
     {
         return $this->belongsTo(Tratamiento::class);
     }
+
+    public function tratamientosDentales()
+{
+    return $this->hasMany(TratamientoDental::class);
+}
 }

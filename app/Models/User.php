@@ -19,16 +19,20 @@ class User extends Authenticatable
     /**
      * Relación de muchos a muchos con roles.
      */
+    use HasFactory;
+
+    // Relación de muchos a muchos con roles
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'role_user');
     }
 
-    /**
-     * Verificar si el usuario tiene un rol específico.
-     */
-    public function hasRole($role): bool
+    // Método para verificar si el usuario tiene un rol específico
+    public function hasRole(string $role): bool
     {
         return $this->roles()->where('name', $role)->exists();
     }
+
+
+    
 }

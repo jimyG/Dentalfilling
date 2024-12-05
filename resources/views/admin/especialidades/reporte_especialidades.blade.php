@@ -55,8 +55,10 @@ if (file_exists($logoPath)) {
 
 <!-- Sección para mostrar la fecha y hora de generación del reporte -->
 <div class="report-info">
-    Fecha: {{ date('d/m/Y') }} &nbsp; &nbsp; Hora: {{ date('H:i:s') }}
+    Fecha: {{ \Carbon\Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }} &nbsp; &nbsp;
+    Hora: {{ \Carbon\Carbon::now()->format('h:i:s A') }}
 </div>
+
 
 <table>
     <thead>

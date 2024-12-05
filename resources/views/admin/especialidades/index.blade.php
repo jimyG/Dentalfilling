@@ -1,6 +1,10 @@
 @extends('layouts.menu')
 
 @section('content')
+<!-- Overlay de carga, visible cuando showLoaderAndPrint está activo -->
+<div id="loader-overlay" class="loader-overlay" style="display: none;">
+    <div class="loader"></div>
+</div>
 
 <head>
 
@@ -17,7 +21,7 @@
             </a>
 
             <!-- Botón Imprimir alineado a la derecha -->
-            <a href="{{ route('admin.especialidades.especialidades.pdf') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.especialidades.especialidades.pdf') }}" class="btn btn-secondary mb-3" onclick="showLoaderAndPrint(event)">
                 <i class="bi bi-printer"></i> Imprimir
             </a>
         </div>
@@ -37,8 +41,14 @@
                 @foreach ($especialidades as $especialidad)
                     <tr>
                         <td class="text-center">{{ $especialidad->id }}</td>
-                        <td class="text-center">{{ $especialidad->name }}</td>
-                        <td class="text-center">{{ $especialidad->description }}</td>
+                        <td class="text-center">
+                            <i class="bi bi-person-fill me-2 icon-persona"></i> <!-- Icono de persona -->
+                            {{ $especialidad->name }}
+                        </td>
+                        <td class="text-center">
+                            <i class="bi bi-file-medical icon-especialidad me-2"></i> <!-- Icono para especialidad -->
+                            {{ $especialidad->description }}
+                        </td>
                         <td class="text-center">
                             <a href="{{ route('admin.especialidades.edit', $especialidad->id) }}" class="btn btn-warning btn-sm me-2">
                                 <i class="bi bi-pencil-fill"></i> Editar
@@ -89,5 +99,51 @@
             });
         }
     </script>
-@endsection
 
+<script>
+    function showLoaderAndPrint(event) {
+    event.preventDefault(); // Evita la redirección instantánea
+
+    // Mostrar la animación de carga
+    const loaderOverlay = document.getElementById('loader-overlay');
+    loaderOverlay.style.display = 'flex';
+
+    // Realizar la solicitud AJAX para obtener el PDF
+    fetch(event.target.href, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/pdf',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al generar el PDF');
+        }
+        return response.blob(); // Obtener el archivo PDF como blob
+    })
+    .then(blob => {
+        // Crear un enlace para descargar el archivo PDF
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_especialidades.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove(); // Remover el enlace después de descargar
+
+        // Ocultar la animación de carga
+        loaderOverlay.style.display = 'none';
+
+        // Liberar el objeto URL creado
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        loaderOverlay.style.display = 'none'; // Ocultar la animación en caso de error
+        alert('Hubo un problema al generar el PDF.');
+    });
+}
+
+</script>
+@endsection

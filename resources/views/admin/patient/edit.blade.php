@@ -3,8 +3,15 @@
 @section('content')
 <div class="container mt-5">
 
-        <div class="table-title">
-            <h1>Editar Paciente</h1>
+<div id="title-wrapper" class="d-flex align-items-start">
+            <a href="{{ url('/admin/patient') }}" id="icon-link" class="me-3">
+                <div id="custom-icon-container">
+                    <i class="bi bi-house-fill"></i>
+                </div>
+            </a>
+            <div class="table-title">
+                <h1>Editar Paciente</h1>
+            </div>
         </div>
 
     <a href="{{ route('admin.patient.index') }}" class="btn btn-secondary mb-3">

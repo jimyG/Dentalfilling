@@ -14,60 +14,83 @@
             </a>
 
             <!-- Botón Imprimir alineado a la derecha -->
-            <button class="btn btn-secondary">
+            <button class="btn btn-secondary mb-3" onclick="window.open('{{ route('admin.doctor.print') }}', '_blank')">
                 <i class="bi bi-printer"></i> Imprimir
             </button>
+
+
+        </div>
+        <div class="table-responsive">
+        <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);">
+    <thead class="table-info">
+        <tr>
+            <th class="d-none d-md-table-cell">ID</th>
+            <th>Nombre</th>
+            <th class="d-none d-md-table-cell">Email</th>
+            <th class="d-none d-md-table-cell">Especialidad</th>
+            <th class="d-none d-md-table-cell">Edad</th>
+            <th class="d-none d-md-table-cell">Licencia</th>
+            <th class="d-none d-md-table-cell">Dirección</th>
+            <th class="d-none d-md-table-cell">Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="patientTableBody">
+        @foreach ($medicos as $medico)
+            <tr>
+                <td class="d-none d-md-table-cell">{{ $medico->id }}</td>
+                <td>
+                    <i class="bi bi-person-fill me-2 icon-persona"></i> <!-- Icono de persona -->
+                    {{ $medico->name }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-envelope-fill me-2 icon-correo"></i> <!-- Icono de correo -->
+                    {{ $medico->email }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-file-medical icon-especialidad me-2"></i> <!-- Icono para especialidad -->
+                    {{ $medico->especialidad->name }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-calendar icon-edad me-2"></i> <!-- Icono para edad -->
+                    {{ $medico->edad }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-card-text icon-licencia me-2"></i> <!-- Icono para número de licencia -->
+                    {{ $medico->LicenseNumber }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-geo-alt icon-direccion me-2"></i> <!-- Icono para dirección -->
+                    {{ $medico->address }}
+                </td>
+                <td class="d-none d-md-table-cell">
+                    <i class="bi bi-telephone-fill me-2 icon-telefono"></i> <!-- Icono de teléfono -->
+                    {{ $medico->phone }}
+                </td>
+                <td class="text-center">
+                    <a href="{{ route('admin.doctor.edit', $medico->id) }}" class="btn btn-warning mb-1">
+                        <i class="bi bi-pencil-fill"></i> Editar
+                    </a>
+                    <form action="{{ route('admin.doctor.destroy', $medico->id) }}" method="POST" style="display: inline-block;" id="delete-form-{{ $medico->id }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger mb-1" onclick="confirmDelete({{ $medico->id }})">
+                            <i class="bi bi-trash-fill"></i> Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
         </div>
 
-        <table class="table table-hover" style="border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <thead class="table-info">
-                <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Nombre</th>
-                    <th class="text-center">Email</th>
-                    <th class="text-center">Especialidad</th>
-                    <th class="text-center">Sexo</th>
-                    <th class="text-center">DUI</th>
-                    <th class="text-center">Edad</th>
-                    <th class="text-center">Número de Licencia</th>
-                    <th class="text-center">Dirección</th>
-                    <th class="text-center">Teléfono</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($medicos as $medico)
-                    <tr>
-                        <td class="text-center">{{ $medico->id }}</td>
-                        <td class="text-center">{{ $medico->name }}</td>
-                        <td class="text-center">{{ $medico->email }}</td>
-                        <td class="text-center">{{ $medico->especialidad->name }}</td>
-                        <td class="text-center">{{ $medico->sexo->nombre }}</td>
-                        <td class="text-center">{{ $medico->dui }}</td>
-                        <td class="text-center">{{ $medico->edad }}</td>
-                        <td class="text-center">{{ $medico->LicenseNumber }}</td>
-                        <td class="text-center">{{ $medico->address }}</td>
-                        <td class="text-center">{{ $medico->phone }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('admin.doctor.edit', $medico->id) }}" class="btn btn-warning btn-sm me-2">
-                                <i class="bi bi-pencil-fill"></i> Editar
-                            </a>
 
-                            <form action="{{ route('admin.doctor.destroy', $medico->id) }}" method="POST" style="display: inline-block;" id="delete-form-{{ $medico->id }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger " onclick="confirmDelete({{ $medico->id }})">
-                                    <i class="bi bi-trash-fill"></i> Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
 
-        <!-- Agregar paginación si es necesario -->
-        {{ $medicos->links() }}
+    <!-- Paginación -->
+    <div class="d-flex justify-content-center">
+    {{ $medicos->links('vendor.pagination.custom') }}
     </div>
 
     <!-- SweetAlert2 Script -->

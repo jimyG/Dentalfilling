@@ -50,14 +50,11 @@ class UserController extends Controller
 
         return view('admin.usuarios.edit-user', compact('user', 'roles'));
     }
-
     /**
      * Actualizar un usuario en la base de datos.
      */
     public function update(Request $request, $id)
     {
-
-
             try {
                 $user = User::findOrFail($id);
                 // Validaciones y actualización
@@ -65,21 +62,18 @@ class UserController extends Controller
                 return redirect()->back()->withErrors(['error' => 'Error al actualizar el usuario: ' . $e->getMessage()]);
             }
         $user = User::findOrFail($id);
-
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string'
         ]);
-
         // Actualizar los datos del usuario
         $user->update([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => $validatedData['password'] ? Hash::make($validatedData['password']) : $user->password,
         ]);
-
         // Actualizar el rol del usuario
         $user->roles()->sync(Role::where('name', $validatedData['role'])->first());
 

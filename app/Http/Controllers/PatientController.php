@@ -6,19 +6,18 @@ use App\Models\Patient;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\EvaluacionRegional;
+use Barryvdh\DomPDF\PDF;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Contracts\View\View;
+
 
 class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Obtener todos los pacientes con paginación
-        $patients = Patient::paginate(10);
-        return view('admin.patient.index', compact('patients'));
-    }
-
+   
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -100,11 +99,71 @@ class PatientController extends Controller
      * Display the specified resource.
      */
     public function show($id)
-{
-    $paciente = Patient::with(['signosVitales', 'examenesClinicos', 'evaluacionSistemica', 'evaluacionRegional'])->findOrFail($id);
+    {
+        // Obtener el paciente junto con sus relaciones
+        $paciente = Patient::with([
+            'consultas.tratamientosDentales',  // Cargar la relación de consultas y tratamientos dentales
+            'signosVitales',
+            'examenesClinicos',
+            'evaluacionSistemica',
+            'evaluacionRegional',
+            'enfermedadesComunes',
+            'odontograma'  // Asegúrate de cargar la relación odontograma
+        ])->findOrFail($id);
+    
+        // Verificar si el paciente tiene un odontograma
+        $tieneOdontograma = $paciente->odontograma ? true : false;
+    
+        // Pasar el paciente y la variable de verificación a la vista
+        return view('admin.patient.show', compact('paciente', 'tieneOdontograma'));
+    }
+    public function __construct()
+    {
+        $this->pdf = PDF::class;  // Asegúrate de que $this->pdf esté correctamente asignado
+    }
 
-    return view('admin.patient.show', compact('paciente'));
-}
+    public function report($id)
+    {
+        // Cargar paciente con las relaciones necesarias
+        $paciente = Patient::with([
+            'consultas.tratamientosDentales',
+            'signosVitales',
+            'examenesClinicos',
+            'evaluacionSistemica',
+            'evaluacionRegional',
+            'enfermedadesComunes',
+            'odontograma'
+        ])->findOrFail($id);
+    
+        // Inicializar la variable $noDatos
+        $noDatos = false;
+    
+        // Verificar si alguna de las relaciones está vacía o no existe
+        if (($paciente?->consultas && $paciente->consultas->isEmpty()) || 
+            ($paciente->signosVitales && $paciente->signosVitales->isEmpty()) || 
+            ($paciente->examenesClinicos && $paciente->examenesClinicos->isEmpty()) || 
+            ($paciente->evaluacionSistemica && $paciente->evaluacionSistemica->isEmpty()) || 
+            ($paciente->evaluacionRegional && $paciente->evaluacionRegional->isEmpty()) || 
+            !$paciente->enfermedadesComunes || 
+            ($paciente->odontograma && $paciente->odontograma->isEmpty())) {  
+            $noDatos = true;
+        }
+    
+        // Pasar la variable $noDatos a la vista
+        $pdfView = view('admin.patient.patient_report_id', compact('paciente', 'noDatos'))->render();
+    
+        // Inicializar Dompdf y generar el PDF
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($pdfView);
+        $dompdf->render();
+    
+        return $dompdf->stream('reporte_paciente_' . $paciente->id . '.pdf', ['Attachment' => true]);
+    }
+        
+
+    
 
 
     /**

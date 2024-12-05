@@ -11,7 +11,7 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="{{ route('admin.backup') }}" class="btn btn-primary">
+            <a href="{{ route('admin.backup.generar') }}" class="btn btn-primary">
                 <i class="bi bi-hdd"></i> Generar Respaldo
             </a>
         </div>
